@@ -1,0 +1,540 @@
+/* Google Fonts — must be first */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================
+   CSS Custom Properties
+   ============================ */
+:root {
+  /* Colors */
+  --c-black:        #040c14;
+  --c-deep:         #0d2137;
+  --c-petrol:       #0f2d4a;
+  --c-ocean-mid:    #1a3a5c;
+  --c-ocean-light:  #1a4a6e;
+  --c-warm-amber:   #c45c00;
+  --c-warm-orange:  #f07a1a;
+  --c-warm-red:     #e03000;
+  --c-crisis:       #ff3300;
+  --c-sci-blue:     #2a6fa8;
+  --c-sci-cyan:     #4ab8d8;
+  --c-white:        #f0f4f8;
+  --c-muted:        #8099b0;
+
+  /* Typography */
+  --font-display:   'Bebas Neue', sans-serif;
+  --font-mono:      'Space Mono', monospace;
+  --font-body:      'Inter', sans-serif;
+
+  /* Z-indices */
+  --z-bg:           0;
+  --z-canvas:       1;
+  --z-content:      10;
+  --z-overlay:      20;
+  --z-nav:          100;
+}
+
+/* ============================
+   Base Reset
+   ============================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* GSAP controls scroll */
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--c-black);
+  color: var(--c-white);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ============================
+   Typography Utilities
+   ============================ */
+.font-display  { font-family: var(--font-display); }
+.font-mono     { font-family: var(--font-mono); }
+.font-body     { font-family: var(--font-body); }
+
+/* Cinematic headlines */
+.headline-xl {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 12vw, 14rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.headline-lg {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 9rem);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.headline-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.headline-sm {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.5vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.body-narrative {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.65;
+  font-weight: 300;
+  color: var(--c-muted);
+  max-width: 600px;
+}
+
+.label-sci {
+  font-family: var(--font-mono);
+  font-size: clamp(0.65rem, 1vw, 0.85rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-sci-cyan);
+}
+
+/* ============================
+   Section Base
+   ============================ */
+.section-full {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================
+   Cinematic Image Base
+   ============================ */
+.cinematic-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  will-change: transform;
+}
+
+/* ============================
+   Overlay Utilities
+   ============================ */
+.overlay-black-bottom {
+  background: linear-gradient(
+    to top,
+    rgba(4, 12, 20, 0.98) 0%,
+    rgba(4, 12, 20, 0.6) 40%,
+    transparent 100%
+  );
+}
+
+.overlay-black-full {
+  background: rgba(4, 12, 20, 0.7);
+}
+
+.overlay-black-center {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 20%,
+    rgba(4, 12, 20, 0.85) 100%
+  );
+}
+
+/* ============================
+   Particle Canvas
+   ============================ */
+.particle-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-canvas);
+}
+
+/* ============================
+   Animated Gradient Backgrounds
+   ============================ */
+.bg-ocean-gradient {
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 50%,
+    #0d2137 0%,
+    #040c14 70%
+  );
+}
+
+.bg-warm-gradient {
+  background: radial-gradient(
+    ellipse 100% 60% at 50% 60%,
+    #3a1200 0%,
+    #1a0a00 50%,
+    #040c14 100%
+  );
+}
+
+/* ============================
+   Scroll-triggered reveal classes
+   (initial state — GSAP handles animation)
+   ============================ */
+.reveal-opacity {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: opacity, transform;
+}
+
+.reveal-chars span {
+  opacity: 0;
+  display: inline-block;
+  will-change: opacity, transform;
+}
+
+/* ============================
+   CTA Button
+   ============================ */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2.5rem;
+  background: transparent;
+  border: 1px solid rgba(240, 244, 248, 0.3);
+  color: var(--c-white);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(240, 244, 248, 0.05);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cta-btn:hover::before {
+  transform: scaleX(1);
+}
+
+.cta-btn:hover {
+  border-color: rgba(240, 244, 248, 0.7);
+  letter-spacing: 0.2em;
+}
+
+/* ============================
+   Data Counter
+   ============================ */
+.counter-display {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 9rem);
+  color: var(--c-white);
+  line-height: 1;
+}
+
+.counter-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--c-sci-cyan);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+.counter-source {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--c-muted);
+  letter-spacing: 0.1em;
+  margin-top: 0.25rem;
+  opacity: 0.7;
+}
+
+/* ============================
+   SVG Peru Map
+   ============================ */
+.peru-map-region {
+  fill: transparent;
+  stroke: rgba(42, 111, 168, 0.3);
+  stroke-width: 1;
+  transition: fill 0.8s ease;
+}
+
+.peru-map-region.active-norte {
+  fill: rgba(196, 92, 0, 0.5);
+  stroke: rgba(240, 122, 26, 0.8);
+}
+
+.peru-map-region.active-central {
+  fill: rgba(240, 122, 26, 0.4);
+  stroke: rgba(240, 122, 26, 0.7);
+}
+
+.peru-map-region.active-andes {
+  fill: rgba(42, 111, 168, 0.4);
+  stroke: rgba(74, 184, 216, 0.7);
+}
+
+.peru-map-region.active-selva {
+  fill: rgba(26, 90, 60, 0.4);
+  stroke: rgba(74, 184, 216, 0.5);
+}
+
+/* ============================
+   Sticky Section
+   ============================ */
+.sticky-container {
+  position: relative;
+}
+
+.sticky-panel {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================
+   Progress Indicator
+   ============================ */
+.scene-indicator {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: var(--z-overlay);
+}
+
+.scene-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(240, 244, 248, 0.25);
+  transition: all 0.4s ease;
+}
+
+.scene-dot.active {
+  background: var(--c-sci-cyan);
+  height: 24px;
+  border-radius: 2px;
+}
+
+/* ============================
+   Loading Screen
+   ============================ */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--c-black);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loading-bar-track {
+  width: 200px;
+  height: 1px;
+  background: rgba(240, 244, 248, 0.1);
+  position: relative;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: var(--c-sci-cyan);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ============================
+   Clip-path Transitions
+   ============================ */
+.clip-reveal-left {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  will-change: clip-path;
+}
+
+.clip-reveal-up {
+  clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+  will-change: clip-path;
+}
+
+/* ============================
+   Noise Texture Overlay
+   ============================ */
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: var(--z-overlay);
+}
+
+/* ============================
+   Scanline Effect
+   ============================ */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: var(--z-overlay);
+}
+
+/* ============================
+   Horizontal rule separator
+   ============================ */
+.separator-line {
+  width: 60px;
+  height: 1px;
+  background: var(--c-sci-cyan);
+  opacity: 0.6;
+}
+
+/* ============================
+   Navigation
+   ============================ */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  mix-blend-mode: normal;
+  transition: all 0.5s ease;
+}
+
+.nav-bar.scrolled {
+  background: rgba(4, 12, 20, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 1rem 3rem;
+  border-bottom: 1px solid rgba(42, 111, 168, 0.15);
+}
+
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+.nav-logo span {
+  color: var(--c-sci-cyan);
+}
+
+.nav-scroll-indicator {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--c-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-scroll-indicator::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+/* ============================
+   Responsive
+   ============================ */
+@media (max-width: 768px) {
+  .headline-xl {
+    font-size: clamp(3.5rem, 15vw, 7rem);
+  }
+  .headline-lg {
+    font-size: clamp(2.5rem, 10vw, 5rem);
+  }
+  .nav-bar {
+    padding: 1rem 1.5rem;
+  }
+  .scene-indicator {
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headline-xl {
+    font-size: clamp(3rem, 18vw, 5rem);
+  }
+  .body-narrative {
+    font-size: 1rem;
+  }
+}
+
+/* ============================
+   Reduced Motion
+   ============================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal-opacity,
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+  }
+}
