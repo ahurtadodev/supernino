@@ -83,12 +83,7 @@ gsap.registerPlugin(ScrollTrigger);
     .temp-overlay {
       position: absolute;
       inset: 0;
-      background: radial-gradient(
-        ellipse 80% 100% at 20% 50%,
-        transparent 0%,
-        rgba(6, 14, 24, 0.7) 60%,
-        rgba(6, 14, 24, 0.95) 100%
-      );
+      background: radial-gradient(ellipse 80% 100% at 20% 50%, transparent 0%, rgb(98 148 212 / 33%) 60%, rgba(6, 14, 24, 0.95) 100%);
       z-index: 2;
     }
 
@@ -208,7 +203,7 @@ export class TemperatureComponent implements AfterViewInit, OnDestroy {
   private waveFrame!: number;
   private waveTime = 0;
 
-  constructor(private particles: CanvasParticlesService) {}
+  constructor(private particles: CanvasParticlesService) { }
 
   ngAfterViewInit() {
     this.setupCanvas();
@@ -249,7 +244,8 @@ export class TemperatureComponent implements AfterViewInit, OnDestroy {
     // Label
     gsap.fromTo(this.labelRef.nativeElement,
       { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1,
+      {
+        opacity: 1, y: 0, duration: 1,
         scrollTrigger: { trigger: section, start: 'top 75%' }
       }
     );
@@ -268,7 +264,8 @@ export class TemperatureComponent implements AfterViewInit, OnDestroy {
     // Body text
     gsap.fromTo(this.bodyText.nativeElement,
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.5,
+      {
+        opacity: 1, y: 0, duration: 1, delay: 0.5,
         scrollTrigger: { trigger: section, start: 'top 65%' }
       }
     );

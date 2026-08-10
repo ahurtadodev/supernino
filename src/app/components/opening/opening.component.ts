@@ -12,6 +12,16 @@ gsap.registerPlugin(ScrollTrigger);
   template: `
     <section class="section-full opening-section" id="section-opening" #sectionRef>
       <!-- Noise texture -->
+      <div class="ocean-bg" #bgImage>
+        <img
+          src="assets/images/banner.jpeg"
+          alt="Océano Pacífico"
+          class="cinematic-img ocean-img"
+          #oceanImg
+        />
+        <!-- Thermal overlay that appears on scroll -->
+        <div class="thermal-overlay" #thermalOverlay></div>
+      </div>
       <div class="noise-overlay"></div>
 
       <!-- Warning background pulse glow -->
@@ -21,16 +31,16 @@ gsap.registerPlugin(ScrollTrigger);
       <canvas #starsCanvas class="particle-canvas"></canvas>
 
       <!-- Top urgent badge -->
-      <div class="urgent-top-banner" #bannerRef>
+      <!-- <div class="urgent-top-banner" #bannerRef>
         <span class="pulse-warning-dot"></span>
         <span class="label-sci tracking-widest text-warm-orange">
           ALERTA NACIONAL · MONITOREO CLIMÁTICO 2026 – 2027
         </span>
         <span class="banner-badge">ENFEN / SENAMHI</span>
-      </div>
+      </div> -->
 
       <!-- Content -->
-      <div class="opening-content" #contentRef>
+      <div class="opening-content " #contentRef>
         <div class="opening-line" #lineOne>
           <span class="label-sci tracking-widest text-cyan">PACÍFICO SUR · PROYECCIÓN DE ANOMALÍA</span>
         </div>
@@ -70,7 +80,35 @@ gsap.registerPlugin(ScrollTrigger);
       position: relative;
       overflow: hidden;
     }
+    .ocean-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+.ocean-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 
+  transform-origin: center center;
+  will-change: transform;
+
+  /* Un poco más cinematográfico */
+  filter: brightness(0.80) contrast(1.1) saturate(0.9);
+}
+    .thermal-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 60% 40% at 60% 55%,
+        rgba(228, 108, 3, 0) 0%,
+        rgba(224, 80, 0, 0) 50%,
+        transparent 100%
+      );
+      opacity: 0;
+      mix-blend-mode: screen;
+      will-change: opacity;
+    }
     .opening-threat-glow {
       position: absolute;
       inset: 0;
@@ -90,27 +128,13 @@ gsap.registerPlugin(ScrollTrigger);
       50% { opacity: 0.85; transform: scale(1.08); }
     }
 
-    .urgent-top-banner {
-      position: absolute;
-      top: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      background: rgba(196, 92, 0, 0.12);
-      border: 1px solid rgba(240, 122, 26, 0.35);
-      padding: 0.5rem 1.25rem;
-      backdrop-filter: blur(8px);
-      z-index: 20;
-      opacity: 0;
-      box-shadow: 0 0 20px rgba(196, 92, 0, 0.2);
-    }
 
     .pulse-warning-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
+      position: relative;
+      z-index: 2;
       background: #ff3300;
       box-shadow: 0 0 12px #ff3300;
       animation: alertBlink 1.2s ease-in-out infinite;
@@ -128,12 +152,13 @@ gsap.registerPlugin(ScrollTrigger);
       color: #f0f4f8;
       padding: 0.15rem 0.5rem;
       letter-spacing: 0.1em;
+      z-index: 3;
     }
 
     .opening-content {
       text-align: center;
-      z-index: 10;
       position: relative;
+      z-index: 100;
       max-width: 90vw;
     }
 
@@ -223,7 +248,30 @@ gsap.registerPlugin(ScrollTrigger);
       background: linear-gradient(to bottom, rgba(240,122,26,0.8), transparent);
       animation: scrollPulse 2s ease-in-out infinite;
     }
+.ocean-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
 
+  /* Oscurece la imagen y concentra la atención en el centro */
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(4, 12, 20, 0.72) 0%,
+      rgba(4, 12, 20, 0.34) 35%,
+      rgba(4, 12, 20, 0.58) 65%,
+      rgba(4, 12, 20, 0.88) 100%
+    ),
+    radial-gradient(
+      ellipse at center,
+      rgba(4, 12, 20, 0.15) 0%,
+      rgba(4, 12, 20, 0.55) 70%,
+      rgba(4, 12, 20, 0.9) 100%
+    );
+
+  z-index: 1;
+  pointer-events: none;
+  }
     @keyframes scrollPulse {
       0%, 100% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
       50% { opacity: 1; transform: scaleY(1); }
@@ -233,7 +281,7 @@ gsap.registerPlugin(ScrollTrigger);
 export class OpeningComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sectionRef') sectionRef!: ElementRef<HTMLElement>;
   @ViewChild('starsCanvas') starsCanvas!: ElementRef<HTMLCanvasElement>;
-  @ViewChild('bannerRef') bannerRef!: ElementRef;
+  // @ViewChild('bannerRef') bannerRef!: ElementRef;
   @ViewChild('contentRef') contentRef!: ElementRef;
   @ViewChild('lineOne') lineOne!: ElementRef;
   @ViewChild('lineTwo') lineTwo!: ElementRef;
@@ -244,7 +292,7 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
 
   private tl!: gsap.core.Timeline;
   private animFrame!: number;
-  private stars: {x:number,y:number,r:number,op:number,speed:number}[] = [];
+  private stars: { x: number, y: number, r: number, op: number, speed: number }[] = [];
 
   ngAfterViewInit() {
     this.initStars();
@@ -287,7 +335,7 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
     this.tl = gsap.timeline({ delay: 0.3 });
 
     this.tl
-      .to(this.bannerRef.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 0.1)
+      // .to(this.bannerRef.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 0.1)
       .to(this.lineOne.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.4)
       .to(this.lineTwo.nativeElement, { opacity: 1, duration: 0.9, ease: 'power2.out' }, 1.0)
       .to(this.lineThree.nativeElement, {
@@ -304,7 +352,7 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
     // Initial blur on title
     gsap.set(this.lineThree.nativeElement, { filter: 'blur(20px)' });
     gsap.set(this.lineConcept.nativeElement, { y: 20 });
-    gsap.set(this.bannerRef.nativeElement, { y: -20 });
+    //gsap.set(this.bannerRef.nativeElement, { y: -20 });
   }
 
   private setupScrollExit() {
@@ -319,9 +367,9 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
           scale: 1 + p * 0.35,
           opacity: 1 - p * 2,
         });
-        gsap.set(this.bannerRef.nativeElement, {
-          opacity: Math.max(0, 1 - p * 2.5),
-        });
+        // gsap.set(this.bannerRef.nativeElement, {
+        //   opacity: Math.max(0, 1 - p * 2.5),
+        // });
         gsap.set(this.scrollHint.nativeElement, {
           opacity: Math.max(0, (1 - p * 3)) * 0.8,
         });

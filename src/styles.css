@@ -10,44 +10,47 @@
    ============================ */
 :root {
   /* Colors */
-  --c-black:        #040c14;
-  --c-deep:         #0d2137;
-  --c-petrol:       #0f2d4a;
-  --c-ocean-mid:    #1a3a5c;
-  --c-ocean-light:  #1a4a6e;
-  --c-warm-amber:   #c45c00;
-  --c-warm-orange:  #f07a1a;
-  --c-warm-red:     #e03000;
-  --c-crisis:       #ff3300;
-  --c-sci-blue:     #2a6fa8;
-  --c-sci-cyan:     #4ab8d8;
-  --c-white:        #f0f4f8;
-  --c-muted:        #8099b0;
+  --c-black: #040c14;
+  --c-deep: #0d2137;
+  --c-petrol: #0f2d4a;
+  --c-ocean-mid: #1a3a5c;
+  --c-ocean-light: #1a4a6e;
+  --c-warm-amber: #c45c00;
+  --c-warm-orange: #f07a1a;
+  --c-warm-red: #e03000;
+  --c-crisis: #ff3300;
+  --c-sci-blue: #2a6fa8;
+  --c-sci-cyan: #4ab8d8;
+  --c-white: #f0f4f8;
+  --c-muted: #8099b0;
 
   /* Typography */
-  --font-display:   'Bebas Neue', sans-serif;
-  --font-mono:      'Space Mono', monospace;
-  --font-body:      'Inter', sans-serif;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-body: 'Inter', sans-serif;
 
   /* Z-indices */
-  --z-bg:           0;
-  --z-canvas:       1;
-  --z-content:      10;
-  --z-overlay:      20;
-  --z-nav:          100;
+  --z-bg: 0;
+  --z-canvas: 1;
+  --z-content: 10;
+  --z-overlay: 20;
+  --z-nav: 100;
 }
 
 /* ============================
    Base Reset
    ============================ */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 html {
-  scroll-behavior: auto; /* GSAP controls scroll */
+  scroll-behavior: auto;
+  /* GSAP controls scroll */
   font-size: 16px;
 }
 
@@ -65,9 +68,17 @@ body {
 /* ============================
    Typography Utilities
    ============================ */
-.font-display  { font-family: var(--font-display); }
-.font-mono     { font-family: var(--font-mono); }
-.font-body     { font-family: var(--font-body); }
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
 
 /* Cinematic headlines */
 .headline-xl {
@@ -144,12 +155,7 @@ body {
    Overlay Utilities
    ============================ */
 .overlay-black-bottom {
-  background: linear-gradient(
-    to top,
-    rgba(4, 12, 20, 0.98) 0%,
-    rgba(4, 12, 20, 0.6) 40%,
-    transparent 100%
-  );
+  background: linear-gradient(to top, rgba(4, 12, 20, 0.98) 0%, rgb(46 134 223 / 60%) 40%, transparent 100%);
 }
 
 .overlay-black-full {
@@ -157,11 +163,9 @@ body {
 }
 
 .overlay-black-center {
-  background: radial-gradient(
-    ellipse at center,
-    transparent 20%,
-    rgba(4, 12, 20, 0.85) 100%
-  );
+  background: radial-gradient(ellipse at center,
+      transparent 20%,
+      rgba(4, 12, 20, 0.85) 100%);
 }
 
 /* ============================
@@ -181,20 +185,16 @@ body {
    Animated Gradient Backgrounds
    ============================ */
 .bg-ocean-gradient {
-  background: radial-gradient(
-    ellipse 120% 80% at 50% 50%,
-    #0d2137 0%,
-    #040c14 70%
-  );
+  background: radial-gradient(ellipse 120% 80% at 50% 50%,
+      #0d2137 0%,
+      #040c14 70%);
 }
 
 .bg-warm-gradient {
-  background: radial-gradient(
-    ellipse 100% 60% at 50% 60%,
-    #3a1200 0%,
-    #1a0a00 50%,
-    #040c14 100%
-  );
+  background: radial-gradient(ellipse 100% 60% at 50% 60%,
+      #3a1200 0%,
+      #1a0a00 50%,
+      #040c14 100%);
 }
 
 /* ============================
@@ -418,13 +418,11 @@ body {
 .scanlines {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
-  );
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px);
   pointer-events: none;
   z-index: var(--z-overlay);
 }
@@ -500,12 +498,15 @@ body {
   .headline-xl {
     font-size: clamp(3.5rem, 15vw, 7rem);
   }
+
   .headline-lg {
     font-size: clamp(2.5rem, 10vw, 5rem);
   }
+
   .nav-bar {
     padding: 1rem 1.5rem;
   }
+
   .scene-indicator {
     right: 1rem;
   }
@@ -515,6 +516,7 @@ body {
   .headline-xl {
     font-size: clamp(3rem, 18vw, 5rem);
   }
+
   .body-narrative {
     font-size: 1rem;
   }
@@ -524,6 +526,7 @@ body {
    Reduced Motion
    ============================ */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

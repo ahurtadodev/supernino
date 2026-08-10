@@ -1,20 +1,20 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { NavComponent }           from './components/nav/nav.component';
-import { OpeningComponent }        from './components/opening/opening.component';
-import { OceanComponent }          from './components/ocean/ocean.component';
-import { TemperatureComponent }    from './components/temperature/temperature.component';
-import { ConnectedComponent }      from './components/connected/connected.component';
-import { PeruMapComponent }        from './components/peru-map/peru-map.component';
-import { CoastComponent }          from './components/coast/coast.component';
-import { RiversComponent }         from './components/rivers/rivers.component';
-import { ImpactComponent }         from './components/impact/impact.component';
-import { ClimaxComponent }         from './components/climax/climax.component';
-import { DataSectionComponent }    from './components/data-section/data-section.component';
-import { AlertSectionComponent }   from './components/alert-section/alert-section.component';
-import { FinalSectionComponent }   from './components/final-section/final-section.component';
-import { ScrollAnimationService }  from './services/scroll-animation.service';
+import { NavComponent } from './components/nav/nav.component';
+import { OpeningComponent } from './components/opening/opening.component';
+import { OceanComponent } from './components/ocean/ocean.component';
+import { TemperatureComponent } from './components/temperature/temperature.component';
+import { ConnectedComponent } from './components/connected/connected.component';
+import { PeruMapComponent } from './components/peru-map/peru-map.component';
+import { CoastComponent } from './components/coast/coast.component';
+import { RiversComponent } from './components/rivers/rivers.component';
+import { ImpactComponent } from './components/impact/impact.component';
+import { ClimaxComponent } from './components/climax/climax.component';
+import { DataSectionComponent } from './components/data-section/data-section.component';
+import { AlertSectionComponent } from './components/alert-section/alert-section.component';
+import { FinalSectionComponent } from './components/final-section/final-section.component';
+import { ScrollAnimationService } from './services/scroll-animation.service';
 
 @Component({
   selector: 'app-root',
@@ -40,7 +40,7 @@ import { ScrollAnimationService }  from './services/scroll-animation.service';
     <div id="loading-screen" [class.hidden]="loaded">
       <div class="loading-brand">
         <span class="label-sci" style="font-size:0.7rem;letter-spacing:0.3em;color:#8099b0">
-          CARGANDO EXPERIENCIA
+          CARGANDO...
         </span>
       </div>
       <div class="loading-bar-track" style="margin-top:1.5rem">
@@ -142,7 +142,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private loadInterval!: ReturnType<typeof setInterval>;
 
-  constructor(private scrollAnim: ScrollAnimationService) {}
+  constructor(private scrollAnim: ScrollAnimationService) { }
 
   ngOnInit() {
     this.simulateLoading();
