@@ -1,11 +1,253 @@
 import {
-  Component, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewChildren, QueryList
+  Component, AfterViewInit, OnDestroy, ViewChild, ElementRef
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
+
+export interface Department {
+  id: string;
+  name: string;
+  code: string;
+  region: string;
+  color: string;
+  description: string;
+  stats?: {
+    tempAnomaly: string;
+    vulnerability: string;
+    alertLevel: string;
+  };
+}
+
+export const DEPARTMENTS_DATA: Department[] = [
+  {
+    id: 'amazonas',
+    name: 'AMAZONAS',
+    code: 'AM',
+    region: 'SELVA',
+    color: '#62c370',
+    description: 'Zona de alta pluviosidad con incremento severo de caudal en la cuenca del Utcubamba y riesgo de deslaves en ceja de selva.',
+    stats: { tempAnomaly: '+1.8°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'ancash',
+    name: 'ÁNCASH',
+    code: 'AN',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Vulnerable a huaycos masivos en el Callejón de Huaylas e inundaciones severas costeras en Chimbote, Casma y Huarmey.',
+    stats: { tempAnomaly: '+2.4°C', vulnerability: 'MUY ALTA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'apurimac',
+    name: 'APURÍMAC',
+    code: 'AP',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Sensible a variaciones térmicas drásticas, alternancia de precipitaciones extremas y heladas atípicas altoandinas.',
+    stats: { tempAnomaly: '+1.2°C', vulnerability: 'MEDIA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'arequipa',
+    name: 'AREQUIPA',
+    code: 'AR',
+    region: 'COSTA SUR',
+    color: '#e04b3f',
+    description: 'Monitoreo de desbordes en quebradas de Camaná y Caravelí, junto con alteraciones de ecosistemas marinos por ondas Kelvin.',
+    stats: { tempAnomaly: '+1.6°C', vulnerability: 'MEDIA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'ayacucho',
+    name: 'AYACUCHO',
+    code: 'AY',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Impacto directo en cultivos de altura por desbalance hídrico y erosión violenta en microcuencas interandinas.',
+    stats: { tempAnomaly: '+1.5°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'cajamarca',
+    name: 'CAJAMARCA',
+    code: 'CJ',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Precipitaciones torrenciales atípicas que alimentan las avenidas fluviales hacia Lambayeque y la cuenca amazónica.',
+    stats: { tempAnomaly: '+2.1°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'callao',
+    name: 'CALLAO',
+    code: 'CL',
+    region: 'COSTA CENTRAL',
+    color: '#c45c00',
+    description: 'Provincia Constitucional expuesta a mar de leva, marejadas anómalas y recalentamiento de aguas someras continentales.',
+    stats: { tempAnomaly: '+2.9°C', vulnerability: 'MUY ALTA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'cusco',
+    name: 'CUSCO',
+    code: 'CS',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Crecidas extraordinarias del río Vilcanota/Urubamba amenazando vías de comunicación y zonas arqueológicas.',
+    stats: { tempAnomaly: '+1.4°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'huancavelica',
+    name: 'HUANCAVELICA',
+    code: 'HV',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Desestabilización de taludes, erosión de vertientes y riesgo de aislamiento en comunidades altoandinas.',
+    stats: { tempAnomaly: '+1.3°C', vulnerability: 'ALTA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'huanuco',
+    name: 'HUÁNUCO',
+    code: 'HC',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Punto crítico de flujo de escorrentía entre los Andes centrales y la Amazonía con bloqueos por deslizamientos.',
+    stats: { tempAnomaly: '+1.7°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'ica',
+    name: 'ICA',
+    code: 'IC',
+    region: 'COSTA SUR',
+    color: '#e04b3f',
+    description: 'Avenidas extraordinarias de los ríos Ica, Pisco y Chincha amenazando áreas agroexportadoras y valles costeros.',
+    stats: { tempAnomaly: '+2.2°C', vulnerability: 'MUY ALTA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'junin',
+    name: 'JUNÍN',
+    code: 'JU',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Regulación del valle del Mantaro bajo monitoreo intensivo por anomalías pluviales y variabilidad térmica regional.',
+    stats: { tempAnomaly: '+1.6°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'la-libertad',
+    name: 'LA LIBERTAD',
+    code: 'LL',
+    region: 'COSTA NORTE',
+    color: '#f07a1a',
+    description: 'Activación simultánea de las quebradas San Ildefonso, El León y San Carlos con severas inundaciones urbanas en Trujillo.',
+    stats: { tempAnomaly: '+3.2°C', vulnerability: 'EXTREMA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'lambayeque',
+    name: 'LAMBAYEQUE',
+    code: 'LB',
+    region: 'COSTA NORTE',
+    color: '#f07a1a',
+    description: 'Saturación completa del suelo urbano en Chiclayo, desbordes del río La Leche y colapso de redes fluviales.',
+    stats: { tempAnomaly: '+3.4°C', vulnerability: 'EXTREMA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'lima',
+    name: 'LIMA',
+    code: 'LM',
+    region: 'COSTA CENTRAL',
+    color: '#c45c00',
+    description: 'Activación de quebradas en Chosica, Chaclacayo y aumento récord en los caudales de los ríos Rímac, Chillón y Lurín.',
+    stats: { tempAnomaly: '+2.8°C', vulnerability: 'MUY ALTA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'loreto',
+    name: 'LORETO',
+    code: 'LO',
+    region: 'SELVA',
+    color: '#62c370',
+    description: 'Niveles récords de inundación en las cuencas del Amazonas, Marañón, Ucayali y Napo afectando asentamientos fluviales.',
+    stats: { tempAnomaly: '+1.9°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'madre-de-dios',
+    name: 'MADRE DE DIOS',
+    code: 'MD',
+    region: 'SELVA',
+    color: '#62c370',
+    description: 'Pulsos extraordinarios de crecida en el río Madre de Dios y Tambopata con impacto en biodiversidad y conectividad.',
+    stats: { tempAnomaly: '+1.5°C', vulnerability: 'MEDIA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'moquegua',
+    name: 'MOQUEGUA',
+    code: 'MQ',
+    region: 'COSTA SUR',
+    color: '#e04b3f',
+    description: 'Aumento focalizado de lluvias en cabeceras de cuenca costera e impacto en actividades pesqueras artesanales.',
+    stats: { tempAnomaly: '+1.4°C', vulnerability: 'MEDIA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'pasco',
+    name: 'PASCO',
+    code: 'PA',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Zona de nudo hidrográfico andino expuesta a granizadas atípicas, nevadas intensas e interrupción de la Carretera Central.',
+    stats: { tempAnomaly: '+1.3°C', vulnerability: 'MEDIA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'piura',
+    name: 'PIURA',
+    code: 'PI',
+    region: 'COSTA NORTE',
+    color: '#f07a1a',
+    description: 'Epicentro hidrometeorológico del evento El Niño. Precipitaciones históricas y desbordes cataclísmicos del río Piura.',
+    stats: { tempAnomaly: '+3.8°C', vulnerability: 'CRÍTICA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'puno',
+    name: 'PUNO',
+    code: 'PU',
+    region: 'ANDES',
+    color: '#4ab8d8',
+    description: 'Ecosistema del Altiplano y cuenca del Lago Titicaca propenso a severos contrastes de sequías e inundaciones puntuales.',
+    stats: { tempAnomaly: '+1.3°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'san-martin',
+    name: 'SAN MARTÍN',
+    code: 'SM',
+    region: 'SELVA',
+    color: '#62c370',
+    description: 'Crecidas masivas del río Huallaga provocando erosión de riberas y anegamientos en valles agrícolas fértiles.',
+    stats: { tempAnomaly: '+2.0°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  },
+  {
+    id: 'tacna',
+    name: 'TACNA',
+    code: 'TA',
+    region: 'COSTA SUR',
+    color: '#e04b3f',
+    description: 'Anomalías térmicas marítimas en la corriente de Humboldt con precipitaciones ocasionales en la cabecera del desierto.',
+    stats: { tempAnomaly: '+1.2°C', vulnerability: 'MEDIA', alertLevel: 'AMARILLA' }
+  },
+  {
+    id: 'tumbes',
+    name: 'TUMBES',
+    code: 'TM',
+    region: 'COSTA NORTE',
+    color: '#f07a1a',
+    description: 'Primera línea de impacto por el ingreso de masas de agua cálida ecuatorial. Río Tumbes en nivel de emergencia constante.',
+    stats: { tempAnomaly: '+3.6°C', vulnerability: 'CRÍTICA', alertLevel: 'ROJA' }
+  },
+  {
+    id: 'ucayali',
+    name: 'UCAYALI',
+    code: 'UC',
+    region: 'SELVA',
+    color: '#62c370',
+    description: 'Desbordes contínuos del río Ucayali provocando desborde de lagunas y alteración del transporte fluvial amazónico.',
+    stats: { tempAnomaly: '+1.8°C', vulnerability: 'ALTA', alertLevel: 'NARANJA' }
+  }
+];
 
 @Component({
   selector: 'app-peru-map',
@@ -16,143 +258,533 @@ gsap.registerPlugin(ScrollTrigger);
       <div class="noise-overlay"></div>
       <div class="scanlines"></div>
 
-      <!-- Background gradient -->
+      <!-- Background Glow & Grid Overlay -->
       <div class="map-bg-gradient"></div>
+      <div class="hud-grid-bg"></div>
 
       <!-- Content layout -->
       <div class="map-layout">
 
-        <!-- Left: Text -->
+        <!-- LEFT COL: Dynamic HUD Info Panel -->
         <div class="map-text-col">
-          <span class="label-sci reveal-opacity" #labelRef>05 — EL MAPA DEL PERÚ</span>
+          <div class="hud-header reveal-opacity" #labelRef>
+            <span class="label-sci">05 — MONITOR GEOGRÁFICO INTERACTIVO</span>
+            <span class="hud-status-badge"><span class="hud-pulse-dot"></span> EN VIVO</span>
+          </div>
 
           <div class="map-title-block">
             <h2 class="headline-xl map-title" #titlePeruRef>PERÚ</h2>
             <div class="map-subtitle reveal-up" #subtitleRef>
-              <p>¿QUÉ PASA CUANDO<br>EL CLIMA CAMBIA?</p>
+              <p>IMPACTO REGIONAL DEL FENÓMENO EL NIÑO 2026</p>
             </div>
           </div>
 
-          <!-- Region list -->
-          <div class="region-list" #regionListRef>
-            <div *ngFor="let region of regions"
-                 class="region-item"
-                 [class.active]="region.active"
-                 (mouseenter)="highlightRegion(region.id)"
-                 (mouseleave)="clearHighlight()">
-              <div class="region-dot" [style.background]="region.active ? region.color : ''"></div>
-              <span class="label-sci region-name" [style.color]="region.active ? region.color : ''">
-                {{ region.name }}
-              </span>
+          <!-- Region filter chips -->
+          <div class="region-filter-bar reveal-up" #regionBarRef>
+            <button
+              *ngFor="let reg of regionFilters"
+              class="region-filter-chip"
+              [class.active]="selectedRegionFilter === reg.name"
+              [style.--chip-color]="reg.color"
+              (click)="filterByRegion(reg.name)">
+              <span class="chip-dot" [style.background]="reg.color"></span>
+              {{ reg.name }}
+            </button>
+          </div>
+
+          <!-- Active Department Info Panel -->
+          <div class="hud-info-card reveal-up" #infoPanelRef *ngIf="selectedDepartment">
+            <div class="hud-card-corner top-left"></div>
+            <div class="hud-card-corner top-right"></div>
+            <div class="hud-card-corner bottom-left"></div>
+            <div class="hud-card-corner bottom-right"></div>
+
+            <div class="hud-card-header">
+              <div class="dept-code-badge" [style.border-color]="selectedDepartment.color" [style.color]="selectedDepartment.color">
+                {{ selectedDepartment.code }}
+              </div>
+              <div class="dept-title-group">
+                <span class="dept-region-tag" [style.color]="selectedDepartment.color">
+                  {{ selectedDepartment.region }}
+                </span>
+                <h3 class="dept-name">{{ selectedDepartment.name }}</h3>
+              </div>
+              <div class="dept-alert-badge" [class]="'alert-' + selectedDepartment.stats?.alertLevel?.toLowerCase()">
+                <span class="alert-icon">⚡</span> {{ selectedDepartment.stats?.alertLevel }}
+              </div>
+            </div>
+
+            <p class="dept-narrative">
+              {{ selectedDepartment.description }}
+            </p>
+
+            <div class="hud-metrics-grid" *ngIf="selectedDepartment.stats">
+              <div class="metric-box">
+                <span class="metric-label">ANOMALÍA TSM</span>
+                <span class="metric-value highlight-cyan">{{ selectedDepartment.stats.tempAnomaly }}</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">VULNERABILIDAD</span>
+                <span class="metric-value" [style.color]="selectedDepartment.color">{{ selectedDepartment.stats.vulnerability }}</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">ESTADO DE ALERTA</span>
+                <span class="metric-value alert-text">{{ selectedDepartment.stats.alertLevel }}</span>
+              </div>
             </div>
           </div>
 
-          <!-- Connection chain -->
-          <div class="connection-chain reveal-up" #chainRef>
-            <div *ngFor="let step of chain; let i = index"
-                 class="chain-step"
-                 [class.chain-step--active]="step.active">
-              <span class="label-sci chain-text" [style.color]="step.active ? step.color : ''">
-                {{ step.label }}
-              </span>
-              <div class="chain-arrow" *ngIf="i < chain.length - 1">→</div>
+          <!-- Quick Department Selector List -->
+          <div class="dept-quick-list reveal-up">
+            <span class="label-sci quick-list-title">DEPARTAMENTOS ({{ filteredDepartments.length }})</span>
+            <div class="quick-chips-wrapper">
+              <button
+                *ngFor="let dept of filteredDepartments"
+                class="dept-chip"
+                [class.selected]="selectedDepartment?.id === dept.id"
+                [class.hovered]="hoveredDepartmentId === dept.id"
+                [style.--dept-color]="dept.color"
+                (mouseenter)="onDepartmentHover(dept.id)"
+                (mouseleave)="onDepartmentLeave()"
+                (click)="selectDepartment(dept.id)">
+                {{ dept.name }}
+              </button>
             </div>
           </div>
+
         </div>
 
-        <!-- Right: SVG Map -->
+        <!-- RIGHT COL: Real Geographical SVG Map -->
         <div class="map-svg-col" #mapColRef>
-          <svg class="peru-svg" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg" #mapSvgRef>
-            <!-- Peru simplified outline -->
-            <!-- Norte coast -->
-            <path id="region-norte"
-              d="M80,20 L120,15 L145,25 L148,45 L140,65 L135,85 L130,105 L118,115 L105,110 L90,100 L80,85 L72,65 L70,45 Z"
-              class="peru-map-region"
-              [class.active-norte]="activeRegion === 'norte' || animPhase >= 1"
-              (mouseenter)="highlightRegion('norte')" />
 
-            <!-- Central coast -->
-            <path id="region-central"
-              d="M118,115 L130,105 L135,85 L140,65 L148,45 L155,55 L158,80 L155,100 L150,125 L142,145 L130,160 L118,165 L108,155 L110,135 Z"
-              class="peru-map-region"
-              [class.active-central]="activeRegion === 'central' || animPhase >= 2"
-              (mouseenter)="highlightRegion('central')" />
+          <div class="svg-wrapper">
+            <!-- HUD Scanner effect background line -->
+            <div class="hud-scan-line"></div>
 
-            <!-- Sur coast -->
-            <path id="region-sur"
-              d="M130,160 L142,145 L150,125 L155,100 L162,115 L165,140 L162,165 L155,185 L145,200 L132,210 L118,205 L115,185 Z"
-              class="peru-map-region"
-              [class.active-central]="activeRegion === 'sur' || animPhase >= 2"
-              (mouseenter)="highlightRegion('sur')" />
+            <svg
+              class="peru-svg-real"
+              viewBox="-45 -25 540 745"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="xMidYMid meet"
+              (mousemove)="onSvgMouseMove($event)"
+              #mapSvgRef>
 
-            <!-- Andes -->
-            <path id="region-andes"
-              d="M148,45 L190,30 L220,40 L235,70 L238,100 L232,130 L225,160 L215,190 L200,215 L185,230 L165,235 L155,185 L162,165 L165,140 L162,115 L155,100 L158,80 L155,55 L148,45 Z"
-              class="peru-map-region"
-              [class.active-andes]="activeRegion === 'andes' || animPhase >= 3"
-              (mouseenter)="highlightRegion('andes')" />
+              <defs>
+                <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="6" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+                <filter id="glow-dept" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="10" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
 
-            <!-- Selva Norte -->
-            <path id="region-selva-norte"
-              d="M190,30 L240,20 L275,35 L285,60 L280,90 L272,120 L260,140 L248,150 L238,100 L235,70 L220,40 Z"
-              class="peru-map-region"
-              [class.active-selva]="activeRegion === 'selva' || animPhase >= 4"
-              (mouseenter)="highlightRegion('selva')" />
+              <!-- Compass HUD Element -->
+              <g class="hud-compass" transform="translate(440, 40)" opacity="0.4">
+                <circle cx="0" cy="0" r="22" fill="none" stroke="#2a6fa8" stroke-width="0.8" stroke-dasharray="4 2" />
+                <circle cx="0" cy="0" r="13" fill="none" stroke="#4ab8d8" stroke-width="0.5" />
+                <text x="-4" y="-26" font-size="9" fill="#4ab8d8" font-family="Space Mono">N</text>
+                <line x1="0" y1="-18" x2="0" y2="18" stroke="#4ab8d8" stroke-width="0.8" />
+                <line x1="-18" y1="0" x2="18" y2="0" stroke="#4ab8d8" stroke-width="0.8" />
+              </g>
 
-            <!-- Selva Central/Sur -->
-            <path id="region-selva-sur"
-              d="M238,100 L248,150 L260,140 L272,120 L280,90 L285,150 L278,200 L268,240 L255,270 L240,290 L220,295 L200,285 L185,265 L185,230 L200,215 L215,190 L225,160 L232,130 Z"
-              class="peru-map-region"
-              [class.active-selva]="activeRegion === 'selva' || animPhase >= 4"
-              (mouseenter)="highlightRegion('selva')" />
+              <!-- Scale / Lat Long HUD Overlay -->
+              <g class="hud-latlong" opacity="0.35" font-family="Space Mono" font-size="8" fill="#8099b0">
+                <text x="-25" y="-5">GRID: 08°00'S / 75°00'W</text>
+                <text x="-25" y="7">DATUM: WGS84 — SISMOMETRÍA 2026</text>
+                <line x1="-25" y1="14" x2="75" y2="14" stroke="#2a6fa8" stroke-width="1" />
+                <line x1="-25" y1="10" x2="-25" y2="18" stroke="#2a6fa8" stroke-width="1" />
+                <line x1="75" y1="10" x2="75" y2="18" stroke="#2a6fa8" stroke-width="1" />
+              </g>
 
-            <!-- Sur extreme -->
-            <path id="region-sur-ext"
-              d="M132,210 L145,200 L155,185 L165,235 L185,230 L185,265 L178,290 L168,310 L155,325 L140,330 L125,320 L118,300 L120,275 L125,250 Z"
-              class="peru-map-region"
-              [class.active-andes]="activeRegion === 'andes' || animPhase >= 3"
-              (mouseenter)="highlightRegion('andes')" />
+              <!-- ALL 25 DEPARTMENTS SVG REAL PATHS -->
+              <g class="departments-group">
 
-            <!-- Glowing outline of full Peru -->
-            <path
-              d="M80,20 L120,15 L145,25 L190,30 L240,20 L275,35 L285,60 L280,90 L272,120 L285,150 L278,200 L268,240 L255,270 L240,290 L220,295 L200,285 L185,265 L185,230 L165,235 L155,325 L140,330 L125,320 L118,300 L120,275 L125,250 L132,210 L118,205 L115,185 L130,160 L142,145 L150,125 L155,100 L158,80 L155,55 L148,45 L140,65 L135,85 L130,105 L118,115 L105,110 L90,100 L80,85 L72,65 L70,45 Z"
-              fill="none"
-              stroke="rgba(42,111,168,0.5)"
-              stroke-width="1.5"
-              class="peru-outline" />
+                <!-- 1. AMAZONAS -->
+                <path
+                  id="amazonas"
+                  class="department"
+                  d="M141.5,203.8 L139.0,206.6 L138.7,216.7 L143.4,225.7 L146.0,228.1 L152.4,229.8 L156.3,231.8 L159.8,238.9 L158.8,241.3 L154.3,245.6 L153.0,249.0 L149.0,250.7 L144.5,250.7 L140.5,249.1 L137.9,251.9 L136.6,263.7 L137.8,265.1 L132.8,264.8 L128.4,265.8 L127.2,263.0 L127.1,255.4 L123.4,247.9 L121.3,244.7 L114.6,240.6 L110.8,233.0 L104.3,229.6 L98.4,221.0 L100.3,214.9 L104.6,208.4 L104.6,203.4 L103.0,194.9 L105.3,189.2 L105.4,185.2 L103.8,182.5 L102.6,177.5 L100.6,173.5 L103.3,167.7 L101.6,163.6 L105.6,155.0 L106.0,151.0 L108.6,149.2 L109.6,144.7 L111.8,142.4 L111.3,139.3 L113.7,131.6 L113.8,128.6 L117.3,128.2 L119.0,132.3 L121.3,131.2 L120.1,126.9 L126.0,120.2 L129.8,115.1 L134.8,111.7 L136.8,123.9 L140.2,131.3 L142.0,143.0 L144.5,147.3 L145.5,151.8 L144.5,154.9 L143.8,167.7 L140.5,174.3 L137.6,177.8 L136.3,183.4 L138.8,197.8 Z"
+                  [class.active]="selectedDepartment?.id === 'amazonas'"
+                  [class.hovered]="hoveredDepartmentId === 'amazonas'"
+                  [style.--dept-color]="'#62c370'"
+                  (mouseenter)="onDepartmentHover('amazonas')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('amazonas')">
+                  <title>Amazonas</title>
+                </path>
 
-            <!-- Flow lines: Ocean -> Rain -> Rivers -> Cities -->
-            <g class="flow-lines" #flowLinesRef>
-              <path class="flow-line"
-                d="M 20,50 Q 50,60 80,70"
-                stroke="#4ab8d8" stroke-width="1.5" fill="none"
-                stroke-dasharray="5,5" opacity="0" />
-              <path class="flow-line"
-                d="M 100,80 Q 115,100 118,115"
-                stroke="#1a4a6e" stroke-width="1.5" fill="none"
-                stroke-dasharray="5,5" opacity="0" />
-              <path class="flow-line"
-                d="M 95,120 Q 100,140 105,155"
-                stroke="#c45c00" stroke-width="1.5" fill="none"
-                stroke-dasharray="5,5" opacity="0" />
-            </g>
+                <!-- 2. ÁNCASH -->
+                <path
+                  id="ancash"
+                  class="department"
+                  d="M132.9,402.5 L126.6,392.8 L124.7,387.3 L122.4,385.0 L121.9,381.2 L119.8,377.8 L119.9,371.8 L114.6,365.0 L114.6,362.8 L112.3,357.6 L112.8,355.4 L108.5,351.9 L109.6,348.8 L107.3,348.6 L107.5,350.9 L105.3,348.4 L106.9,345.6 L104.1,343.8 L103.8,340.3 L105.0,339.5 L105.8,335.0 L108.0,332.3 L118.7,328.5 L119.4,324.1 L122.2,319.8 L124.0,314.9 L129.9,309.9 L132.1,305.8 L135.5,306.3 L141.6,303.8 L143.2,309.1 L147.8,312.8 L153.0,319.9 L154.0,323.6 L155.2,329.4 L158.1,332.1 L158.1,334.1 L161.1,337.5 L163.5,338.3 L166.4,341.8 L174.6,346.5 L176.1,349.1 L171.6,353.8 L167.8,362.6 L167.3,365.8 L163.6,371.4 L166.4,377.4 L167.1,382.1 L170.0,384.2 L169.0,390.3 L160.8,394.1 L159.0,399.2 L152.3,403.9 L151.0,406.3 L147.3,408.0 L144.3,407.8 L144.0,402.1 L141.3,399.9 L138.3,399.7 L141.1,395.0 L140.0,393.5 L136.8,393.8 L136.2,399.3 Z"
+                  [class.active]="selectedDepartment?.id === 'ancash'"
+                  [class.hovered]="hoveredDepartmentId === 'ancash'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('ancash')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('ancash')">
+                  <title>Áncash</title>
+                </path>
 
-            <!-- City dots -->
-            <g class="city-dots" #cityDotsRef>
-              <circle cx="95" cy="155" r="3" fill="#c45c00" opacity="0" class="city-dot" />
-              <text x="85" y="152" font-size="6" fill="#8099b0" font-family="Space Mono" opacity="0" class="city-label">Lima</text>
+                <!-- 3. APURÍMAC -->
+                <path
+                  id="apurimac"
+                  class="department"
+                  d="M321.0,560.3 L314.2,556.3 L313.3,557.5 L305.1,559.6 L301.8,559.1 L299.2,562.8 L296.0,563.4 L294.1,558.5 L296.0,558.0 L296.9,554.0 L295.4,551.2 L295.9,545.6 L295.5,540.8 L293.5,537.6 L292.2,532.1 L288.1,524.1 L290.1,522.5 L288.5,519.5 L286.1,517.9 L284.3,508.3 L285.9,502.2 L295.5,508.3 L298.7,510.8 L306.6,512.3 L307.7,510.2 L312.3,511.7 L317.3,509.4 L323.3,510.9 L330.6,515.8 L337.1,517.3 L339.1,520.3 L343.0,521.1 L346.9,524.6 L349.9,530.5 L349.8,537.1 L348.6,541.1 L342.3,548.6 L338.7,549.7 L334.8,552.3 L333.9,554.3 L334.4,558.3 L331.3,559.1 L324.2,557.6 Z"
+                  [class.active]="selectedDepartment?.id === 'apurimac'"
+                  [class.hovered]="hoveredDepartmentId === 'apurimac'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('apurimac')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('apurimac')">
+                  <title>Apurímac</title>
+                </path>
 
-              <circle cx="88" cy="58" r="3" fill="#f07a1a" opacity="0" class="city-dot" />
-              <text x="78" y="55" font-size="6" fill="#8099b0" font-family="Space Mono" opacity="0" class="city-label">Piura</text>
+                <!-- 4. AREQUIPA -->
+                <path
+                  id="arequipa"
+                  class="department"
+                  d="M321.0,560.3 L324.2,557.6 L331.3,559.1 L334.4,558.3 L334.5,560.8 L336.7,563.7 L339.9,564.9 L346.1,563.3 L349.8,566.4 L351.4,563.1 L351.7,558.4 L353.6,559.6 L356.9,565.1 L359.4,566.1 L357.6,568.8 L357.3,572.8 L364.5,575.6 L370.3,574.2 L370.4,572.2 L378.5,575.9 L380.6,574.4 L382.8,576.3 L382.5,579.6 L388.0,584.6 L388.5,593.5 L392.3,597.9 L391.0,601.9 L394.4,606.6 L394.1,609.7 L392.8,620.2 L390.2,622.9 L389.2,628.0 L382.8,627.8 L379.8,629.5 L376.5,634.1 L376.5,637.8 L372.0,640.8 L371.1,642.7 L372.5,647.1 L375.3,649.7 L371.3,658.4 L369.3,659.9 L363.8,656.5 L357.7,654.8 L352.6,650.2 L346.7,648.2 L343.6,644.1 L340.1,642.6 L337.7,638.0 L333.1,635.2 L329.4,634.0 L325.6,634.0 L322.3,632.7 L318.5,629.8 L312.2,627.4 L307.3,624.0 L303.5,623.5 L302.8,621.4 L299.0,619.6 L288.7,616.7 L283.5,613.8 L276.6,608.6 L276.1,606.6 L261.6,600.3 L260.8,597.6 L246.7,591.4 L245.9,590.3 L238.2,586.5 L242.5,578.9 L251.2,573.2 L251.8,574.7 L260.7,577.4 L263.2,583.7 L265.3,584.7 L267.0,587.9 L269.5,588.8 L274.1,587.4 L274.7,592.7 L278.7,591.7 L281.3,587.6 L293.7,586.1 L298.1,584.2 L304.5,585.4 L304.6,581.3 L308.7,581.8 L313.9,575.4 L315.0,569.0 L313.9,567.0 L315.4,563.8 L321.3,562.8 Z"
+                  [class.active]="selectedDepartment?.id === 'arequipa'"
+                  [class.hovered]="hoveredDepartmentId === 'arequipa'"
+                  [style.--dept-color]="'#e04b3f'"
+                  (mouseenter)="onDepartmentHover('arequipa')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('arequipa')">
+                  <title>Arequipa</title>
+                </path>
 
-              <circle cx="92" cy="35" r="3" fill="#f07a1a" opacity="0" class="city-dot" />
-              <text x="82" y="32" font-size="6" fill="#8099b0" font-family="Space Mono" opacity="0" class="city-label">Tumbes</text>
+                <!-- 5. AYACUCHO -->
+                <path
+                  id="ayacucho"
+                  class="department"
+                  d="M251.2,573.2 L252.5,566.7 L250.3,563.0 L249.6,559.6 L246.8,557.0 L244.9,552.9 L241.6,554.9 L239.2,554.9 L239.4,550.8 L236.3,546.9 L239.0,541.6 L238.8,537.2 L241.6,535.1 L250.4,534.0 L251.1,532.5 L251.3,526.1 L249.1,520.4 L249.0,516.4 L244.1,510.6 L245.1,507.0 L248.8,505.6 L250.9,507.6 L254.7,508.5 L256.1,506.7 L253.1,504.7 L257.2,500.9 L262.3,500.9 L263.8,499.3 L263.3,495.3 L265.5,494.3 L268.3,495.4 L266.2,487.5 L267.7,484.6 L266.0,478.4 L262.8,473.5 L260.2,473.2 L258.2,470.6 L260.1,465.3 L264.5,461.3 L266.0,463.9 L272.4,467.7 L276.1,465.7 L280.4,466.3 L284.1,472.6 L284.2,475.0 L287.8,479.8 L291.0,481.7 L295.6,496.4 L295.1,497.5 L300.7,502.0 L304.7,507.7 L307.7,510.2 L306.6,512.3 L298.7,510.8 L295.5,508.3 L285.9,502.2 L284.3,508.3 L286.1,517.9 L288.5,519.5 L290.1,522.5 L288.1,524.1 L292.2,532.1 L293.5,537.6 L295.5,540.8 L295.9,545.6 L295.4,551.2 L296.9,554.0 L296.0,558.0 L294.1,558.5 L296.0,563.4 L299.2,562.8 L301.8,559.1 L305.1,559.6 L313.3,557.5 L314.2,556.3 L321.0,560.3 L321.3,562.8 L315.4,563.8 L313.9,567.0 L315.0,569.0 L313.9,575.4 L308.7,581.8 L304.6,581.3 L304.5,585.4 L298.1,584.2 L293.7,586.1 L281.3,587.6 L278.7,591.7 L274.7,592.7 L274.1,587.4 L269.5,588.8 L267.0,587.9 L265.3,584.7 L263.2,583.7 L260.7,577.4 L251.8,574.7 Z"
+                  [class.active]="selectedDepartment?.id === 'ayacucho'"
+                  [class.hovered]="hoveredDepartmentId === 'ayacucho'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('ayacucho')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('ayacucho')">
+                  <title>Ayacucho</title>
+                </path>
 
-              <circle cx="200" cy="135" r="3" fill="#4ab8d8" opacity="0" class="city-dot" />
-              <text x="204" y="137" font-size="6" fill="#8099b0" font-family="Space Mono" opacity="0" class="city-label">Cusco</text>
-            </g>
-          </svg>
+                <!-- 6. CAJAMARCA -->
+                <path
+                  id="cajamarca"
+                  class="department"
+                  d="M76.7,266.0 L77.7,261.7 L83.6,256.6 L83.6,254.9 L77.1,252.5 L75.7,249.0 L72.8,247.3 L72.1,242.2 L73.0,240.2 L78.6,238.1 L80.1,234.8 L78.8,232.5 L81.3,228.5 L77.9,226.8 L75.9,228.1 L72.5,227.1 L76.2,223.9 L73.6,217.1 L74.7,208.4 L77.2,208.5 L77.0,202.4 L75.7,200.7 L75.0,195.3 L79.0,191.0 L80.6,188.0 L85.6,188.6 L87.1,189.8 L89.2,187.8 L90.3,184.5 L93.3,183.3 L92.2,179.7 L95.1,176.0 L100.6,173.5 L102.6,177.5 L103.8,182.5 L105.4,185.2 L105.3,189.2 L103.0,194.9 L104.6,203.4 L104.6,208.4 L100.3,214.9 L98.4,221.0 L104.3,229.6 L110.8,233.0 L114.6,240.6 L121.3,244.7 L123.4,247.9 L127.1,255.4 L127.2,263.0 L128.4,265.8 L130.5,271.3 L133.0,274.2 L134.2,279.7 L137.4,283.1 L133.3,283.4 L131.2,284.7 L130.6,290.5 L124.9,291.8 L122.8,291.0 L119.1,294.2 L117.0,294.6 L116.6,292.3 L112.8,289.9 L109.5,289.8 L105.9,287.3 L101.7,287.8 L98.8,286.6 L92.4,288.7 L90.3,292.3 L87.8,290.7 L87.7,286.8 L86.5,284.3 L82.6,280.9 L76.7,279.3 L75.4,278.0 L77.0,274.6 L76.3,271.8 Z"
+                  [class.active]="selectedDepartment?.id === 'cajamarca'"
+                  [class.hovered]="hoveredDepartmentId === 'cajamarca'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('cajamarca')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('cajamarca')">
+                  <title>Cajamarca</title>
+                </path>
+
+                <!-- 7. CALLAO -->
+                <g id="callao"
+                   class="department-group"
+                   [class.active]="selectedDepartment?.id === 'callao'"
+                   [class.hovered]="hoveredDepartmentId === 'callao'"
+                   [style.--dept-color]="'#c45c00'"
+                   (mouseenter)="onDepartmentHover('callao')"
+                   (mouseleave)="onDepartmentLeave()"
+                   (click)="selectDepartment('callao')">
+                  <path
+                    class="department callao-path"
+                    d="M162.3,458.7 L160.1,458.3 L161.3,455.6 L162.4,456.3 Z" />
+                  <!-- Callao prominent HUD target marker -->
+                  <circle cx="161.5" cy="457" r="5" class="callao-marker-outer" />
+                  <circle cx="161.5" cy="457" r="2.5" class="callao-marker-inner" />
+                  <title>Callao</title>
+                </g>
+
+                <!-- 8. CUSCO -->
+                <path
+                  id="cusco"
+                  class="department"
+                  d="M347.7,430.3 L346.9,434.6 L341.8,443.7 L339.8,452.7 L341.4,457.3 L347.6,461.0 L349.3,466.4 L354.4,469.2 L357.9,477.9 L357.0,482.1 L359.1,486.3 L368.2,490.0 L372.4,489.9 L378.8,492.9 L384.5,494.6 L389.7,498.0 L403.0,500.4 L408.9,499.6 L406.8,497.3 L407.8,496.0 L415.1,496.9 L413.9,502.5 L414.1,506.7 L412.5,509.6 L406.7,516.4 L402.3,525.8 L397.2,527.1 L395.8,534.2 L397.3,537.4 L396.3,542.4 L394.0,549.4 L390.6,550.6 L389.9,555.8 L385.1,559.6 L387.4,562.5 L389.6,563.0 L390.0,569.4 L388.8,571.4 L388.9,575.6 L390.1,579.9 L389.6,583.8 L388.0,584.6 L382.5,579.6 L382.8,576.3 L380.6,574.4 L378.5,575.9 L370.4,572.2 L370.3,574.2 L364.5,575.6 L357.3,572.8 L357.6,568.8 L359.4,566.1 L356.9,565.1 L353.6,559.6 L351.7,558.4 L351.4,563.1 L349.8,566.4 L346.1,563.3 L339.9,564.9 L336.7,563.7 L334.5,560.8 L334.4,558.3 L333.9,554.3 L334.8,552.3 L338.7,549.7 L342.3,548.6 L348.6,541.1 L349.8,537.1 L349.9,530.5 L346.9,524.6 L343.0,521.1 L339.1,520.3 L337.1,517.3 L330.6,515.8 L323.3,510.9 L317.3,509.4 L312.3,511.7 L307.7,510.2 L304.7,507.7 L300.7,502.0 L295.1,497.5 L295.6,496.4 L291.0,481.7 L287.8,479.8 L284.2,475.0 L284.1,472.6 L280.4,466.3 L285.6,466.1 L291.9,464.1 L293.6,461.0 L294.0,456.3 L297.7,450.9 L297.9,445.4 L291.1,442.7 L296.3,438.1 L300.5,430.2 L311.9,429.2 L314.5,428.4 L317.2,425.6 L319.3,429.8 L323.5,432.2 L327.8,431.7 L331.1,434.2 L334.0,434.4 L339.1,430.9 L343.7,429.5 L347.1,430.0 L347.7,430.3 Z"
+                  [class.active]="selectedDepartment?.id === 'cusco'"
+                  [class.hovered]="hoveredDepartmentId === 'cusco'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('cusco')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('cusco')">
+                  <title>Cusco</title>
+                </path>
+
+                <!-- 9. HUANCAVELICA -->
+                <path
+                  id="huancavelica"
+                  class="department"
+                  d="M264.5,461.3 L260.1,465.3 L258.2,470.6 L260.2,473.2 L262.8,473.5 L266.0,478.4 L267.7,484.6 L266.2,487.5 L268.3,495.4 L265.5,494.3 L263.3,495.3 L263.8,499.3 L262.3,500.9 L257.2,500.9 L253.1,504.7 L256.1,506.7 L254.7,508.5 L250.9,507.6 L248.8,505.6 L245.1,507.0 L244.1,510.6 L249.0,516.4 L249.1,520.4 L251.3,526.1 L251.1,532.5 L250.4,534.0 L241.6,535.1 L238.8,537.2 L236.6,535.1 L233.5,534.6 L228.3,530.3 L221.9,527.8 L220.5,522.1 L222.2,519.2 L220.9,515.8 L223.4,511.3 L216.3,509.1 L211.5,508.4 L213.3,503.4 L215.1,501.8 L214.8,497.8 L217.5,495.2 L217.7,492.9 L219.3,488.1 L222.2,485.8 L224.0,481.7 L227.2,476.6 L233.6,470.9 L236.9,469.8 L235.4,466.7 L237.0,466.2 L239.2,462.7 L237.2,457.2 L239.3,454.7 L242.7,457.3 L249.7,457.1 L253.6,455.0 L259.8,457.1 Z"
+                  [class.active]="selectedDepartment?.id === 'huancavelica'"
+                  [class.hovered]="hoveredDepartmentId === 'huancavelica'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('huancavelica')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('huancavelica')">
+                  <title>Huancavelica</title>
+                </path>
+
+                <!-- 10. HUÁNUCO -->
+                <path
+                  id="huanuco"
+                  class="department"
+                  d="M169.0,390.3 L170.0,384.2 L167.1,382.1 L166.4,377.4 L163.6,371.4 L167.3,365.8 L167.8,362.6 L171.6,353.8 L176.1,349.1 L174.6,346.5 L166.4,341.8 L163.5,338.3 L161.1,337.5 L158.1,334.1 L158.1,332.1 L155.2,329.4 L154.0,323.6 L159.9,323.6 L164.8,322.3 L166.4,326.2 L170.6,326.3 L171.7,324.4 L174.9,323.7 L186.8,326.1 L190.3,324.2 L190.6,318.8 L191.7,317.7 L196.4,325.1 L197.5,329.8 L201.1,330.4 L203.1,327.0 L205.9,324.9 L205.1,327.8 L207.9,334.2 L208.5,340.9 L211.7,344.8 L212.6,350.6 L217.4,356.7 L220.9,355.9 L225.4,352.1 L230.7,350.1 L236.0,341.4 L240.5,335.2 L249.5,328.4 L254.2,326.9 L258.5,327.4 L260.1,329.0 L260.2,332.2 L256.5,335.1 L256.0,340.1 L254.1,344.0 L254.0,349.7 L252.5,354.6 L253.2,357.2 L259.3,366.1 L250.8,370.1 L242.5,371.5 L236.9,370.9 L229.6,374.3 L223.2,375.5 L218.6,375.3 L214.2,376.1 L211.6,377.9 L210.6,383.1 L212.8,391.9 L206.2,395.6 L202.8,393.7 L195.5,393.2 L192.4,390.2 L184.8,389.3 L181.8,390.4 L179.3,393.8 L175.8,396.3 L173.5,395.3 L172.5,392.8 L170.2,392.6 Z"
+                  [class.active]="selectedDepartment?.id === 'huanuco'"
+                  [class.hovered]="hoveredDepartmentId === 'huanuco'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('huanuco')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('huanuco')">
+                  <title>Huánuco</title>
+                </path>
+
+                <!-- 11. ICA -->
+                <path
+                  id="ica"
+                  class="department"
+                  d="M238.2,586.5 L234.1,583.4 L234.9,581.6 L231.3,579.3 L232.2,577.6 L227.7,575.3 L224.3,569.7 L220.7,565.4 L210.1,559.3 L206.7,556.4 L206.6,553.7 L204.8,549.2 L198.8,544.1 L200.1,543.3 L198.6,540.2 L194.8,537.3 L194.0,539.3 L193.3,534.7 L193.8,529.6 L189.5,528.2 L190.6,524.1 L193.1,523.8 L194.4,526.4 L197.4,514.1 L195.9,507.2 L194.8,505.8 L198.9,500.6 L204.2,496.3 L206.2,493.5 L209.2,494.8 L215.2,494.2 L217.7,492.9 L217.5,495.2 L214.8,497.8 L215.1,501.8 L213.3,503.4 L211.5,508.4 L216.3,509.1 L223.4,511.3 L220.9,515.8 L222.2,519.2 L220.5,522.1 L221.9,527.8 L228.3,530.3 L233.5,534.6 L236.6,535.1 L238.8,537.2 L239.0,541.6 L236.3,546.9 L239.4,550.8 L239.2,554.9 L241.6,554.9 L244.9,552.9 L246.8,557.0 L249.6,559.6 L250.3,563.0 L252.5,566.7 L251.2,573.2 L242.5,578.9 Z"
+                  [class.active]="selectedDepartment?.id === 'ica'"
+                  [class.hovered]="hoveredDepartmentId === 'ica'"
+                  [style.--dept-color]="'#e04b3f'"
+                  (mouseenter)="onDepartmentHover('ica')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('ica')">
+                  <title>Ica</title>
+                </path>
+
+                <!-- 12. JUNÍN -->
+                <path
+                  id="junin"
+                  class="department"
+                  d="M260.2,411.8 L261.5,417.2 L264.9,419.5 L283.6,415.4 L288.5,408.5 L293.2,409.9 L295.7,412.7 L298.3,417.7 L297.5,424.4 L300.5,430.2 L296.3,438.1 L291.1,442.7 L297.9,445.4 L297.7,450.9 L294.0,456.3 L293.6,461.0 L291.9,464.1 L285.6,466.1 L280.4,466.3 L276.1,465.7 L272.4,467.7 L266.0,463.9 L264.5,461.3 L259.8,457.1 L253.6,455.0 L249.7,457.1 L242.7,457.3 L239.3,454.7 L237.2,457.2 L239.2,462.7 L237.0,466.2 L235.4,466.7 L236.9,469.8 L233.6,470.9 L227.2,476.6 L224.0,481.7 L220.2,479.1 L221.4,471.4 L217.3,462.3 L218.0,461.0 L215.8,458.5 L208.2,455.1 L203.6,456.1 L201.3,451.8 L199.1,450.1 L196.2,445.5 L195.8,440.1 L193.0,439.7 L189.9,436.6 L188.1,431.2 L186.2,429.3 L185.7,421.2 L193.6,420.6 L193.8,413.8 L199.4,413.8 L202.8,411.7 L204.4,413.2 L213.4,413.1 L225.0,409.6 L228.7,409.5 L237.1,407.3 L240.8,405.3 L245.2,407.4 L250.0,410.8 L253.6,411.9 Z"
+                  [class.active]="selectedDepartment?.id === 'junin'"
+                  [class.hovered]="hoveredDepartmentId === 'junin'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('junin')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('junin')">
+                  <title>Junín</title>
+                </path>
+
+                <!-- 13. LA LIBERTAD -->
+                <path
+                  id="la-libertad"
+                  class="department"
+                  d="M76.7,266.0 L76.3,271.8 L77.0,274.6 L75.4,278.0 L76.7,279.3 L82.6,280.9 L86.5,284.3 L87.7,286.8 L87.8,290.7 L90.3,292.3 L92.4,288.7 L98.8,286.6 L101.7,287.8 L105.9,287.3 L109.5,289.8 L112.8,289.9 L116.6,292.3 L117.0,294.6 L119.1,294.2 L122.8,291.0 L124.9,291.8 L130.6,290.5 L131.2,284.7 L133.3,283.4 L137.4,283.1 L134.2,279.7 L133.0,274.2 L130.5,271.3 L128.4,265.8 L132.8,264.8 L137.8,265.1 L140.1,269.9 L142.5,271.7 L142.2,276.0 L143.6,280.6 L149.0,287.0 L148.3,294.3 L151.0,299.5 L150.8,303.2 L152.5,305.9 L157.4,306.0 L165.1,308.5 L169.6,312.7 L170.8,322.7 L171.7,324.4 L170.6,326.3 L166.4,326.2 L164.8,322.3 L159.9,323.6 L154.0,323.6 L153.0,319.9 L147.8,312.8 L143.2,309.1 L141.6,303.8 L135.5,306.3 L132.1,305.8 L129.9,309.9 L124.0,314.9 L122.2,319.8 L119.4,324.1 L118.7,328.5 L108.0,332.3 L105.8,335.0 L105.0,339.5 L103.8,340.3 L102.5,337.2 L99.4,333.1 L100.2,331.8 L99.5,326.8 L97.2,323.7 L92.6,320.2 L94.1,318.0 L90.8,311.9 L85.5,307.1 L85.5,306.2 L78.8,301.4 L72.4,293.0 L73.6,291.4 L67.9,283.4 L68.2,280.4 L66.7,275.9 L63.7,271.9 L71.0,264.5 Z"
+                  [class.active]="selectedDepartment?.id === 'la-libertad'"
+                  [class.hovered]="hoveredDepartmentId === 'la-libertad'"
+                  [style.--dept-color]="'#f07a1a'"
+                  (mouseenter)="onDepartmentHover('la-libertad')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('la-libertad')">
+                  <title>La Libertad</title>
+                </path>
+
+                <!-- 14. LAMBAYEQUE -->
+                <path
+                  id="lambayeque"
+                  class="department"
+                  d="M63.7,271.9 L63.0,269.8 L54.4,261.3 L53.2,257.7 L47.2,252.5 L40.4,248.5 L27.6,242.3 L32.9,235.1 L34.4,231.6 L39.9,225.6 L51.8,222.1 L53.4,220.9 L53.6,210.4 L58.6,214.3 L61.1,217.9 L60.8,221.8 L64.0,222.9 L65.1,224.8 L69.5,225.0 L72.5,227.1 L75.9,228.1 L77.9,226.8 L81.3,228.5 L78.8,232.5 L80.1,234.8 L78.6,238.1 L73.0,240.2 L72.1,242.2 L72.8,247.3 L75.7,249.0 L77.1,252.5 L83.6,254.9 L83.6,256.6 L77.7,261.7 L76.7,266.0 L71.0,264.5 Z"
+                  [class.active]="selectedDepartment?.id === 'lambayeque'"
+                  [class.hovered]="hoveredDepartmentId === 'lambayeque'"
+                  [style.--dept-color]="'#f07a1a'"
+                  (mouseenter)="onDepartmentHover('lambayeque')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('lambayeque')">
+                  <title>Lambayeque</title>
+                </path>
+
+                <!-- 15. LIMA -->
+                <path
+                  id="lima"
+                  class="department"
+                  d="M185.7,421.2 L186.2,429.3 L188.1,431.2 L189.9,436.6 L193.0,439.7 L195.8,440.1 L196.2,445.5 L199.1,450.1 L201.3,451.8 L203.6,456.1 L208.2,455.1 L215.8,458.5 L218.0,461.0 L217.3,462.3 L221.4,471.4 L220.2,479.1 L224.0,481.7 L222.2,485.8 L219.3,488.1 L217.7,492.9 L215.2,494.2 L209.2,494.8 L206.2,493.5 L204.2,496.3 L198.9,500.6 L194.8,505.8 L186.1,495.0 L184.8,488.6 L180.6,484.1 L178.6,479.1 L174.2,474.9 L176.0,471.3 L178.7,469.7 L180.0,464.7 L176.6,459.4 L178.1,458.0 L175.9,456.5 L178.0,453.6 L175.1,450.2 L172.0,453.1 L168.9,453.2 L168.3,449.1 L172.0,445.4 L167.9,445.5 L164.9,442.8 L165.1,440.1 L163.5,438.6 L161.2,442.4 L159.2,443.4 L155.9,439.4 L154.5,436.3 L142.2,428.7 L142.5,425.7 L144.2,423.9 L141.6,418.1 L141.3,414.8 L138.1,410.6 L137.7,408.5 L132.9,402.5 L136.2,399.3 L136.8,393.8 L140.0,393.5 L141.1,395.0 L138.3,399.7 L141.3,399.9 L144.0,402.1 L144.3,407.8 L147.3,408.0 L151.0,406.3 L152.3,403.9 L159.0,399.2 L160.8,394.1 L169.0,390.3 L170.2,392.6 L172.5,392.8 L173.5,395.3 L175.8,396.3 L179.7,405.2 L180.1,407.6 L182.6,411.0 L182.7,416.4 Z M174.2,474.9 L174.5,470.0 L172.1,467.1 L165.2,463.4 L164.6,459.9 L162.3,458.7 L162.4,456.3 L161.3,455.5 L159.2,446.8 L159.2,443.4 L161.2,442.4 L163.5,438.6 L165.1,440.1 L164.9,442.8 L167.9,445.5 L172.0,445.4 L168.3,449.1 L168.9,453.2 L172.0,453.1 L175.1,450.2 L178.0,453.6 L175.9,456.5 L178.1,458.0 L176.6,459.4 L180.0,464.7 L178.7,469.7 L176.0,471.3 Z"
+                  [class.active]="selectedDepartment?.id === 'lima'"
+                  [class.hovered]="hoveredDepartmentId === 'lima'"
+                  [style.--dept-color]="'#c45c00'"
+                  (mouseenter)="onDepartmentHover('lima')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('lima')">
+                  <title>Lima</title>
+                </path>
+
+                <!-- 16. LORETO -->
+                <path
+                  id="loreto"
+                  class="department"
+                  d="M205.9,324.9 L208.1,315.9 L211.7,311.6 L212.4,307.6 L211.1,303.7 L201.9,284.2 L200.4,277.7 L200.9,269.3 L199.9,265.5 L200.6,262.8 L203.7,257.0 L207.6,255.8 L212.9,258.2 L216.2,262.3 L218.2,262.9 L222.2,257.5 L223.3,251.6 L224.4,240.7 L222.9,237.0 L220.3,234.3 L216.7,232.7 L210.0,231.2 L200.9,231.6 L198.0,230.2 L192.1,224.1 L189.5,224.3 L183.9,228.2 L178.5,228.3 L176.1,226.2 L172.3,218.2 L167.2,215.3 L159.3,215.0 L156.7,213.9 L152.0,209.5 L145.0,206.6 L141.5,203.8 L138.8,197.8 L136.3,183.4 L137.6,177.8 L140.5,174.3 L143.8,167.7 L144.5,154.9 L145.5,151.8 L144.5,147.3 L142.0,143.0 L140.2,131.3 L136.8,123.9 L134.8,111.7 L177.9,96.7 L180.2,95.3 L200.6,79.8 L221.0,56.0 L226.6,33.9 L229.1,35.9 L233.7,35.7 L231.0,27.2 L232.6,22.5 L232.0,18.8 L225.8,14.1 L223.8,8.2 L218.7,5.7 L218.0,3.0 L225.0,4.9 L230.2,4.0 L233.9,0.0 L237.0,0.4 L240.5,3.9 L247.3,7.2 L249.1,5.3 L251.8,9.4 L250.4,10.7 L256.1,11.7 L264.9,20.6 L266.8,24.5 L266.2,26.8 L269.1,28.7 L267.5,31.5 L271.5,36.3 L276.1,37.6 L278.2,36.9 L280.1,40.3 L283.8,41.2 L285.3,44.1 L288.3,45.4 L290.1,43.8 L294.7,46.6 L297.5,51.0 L296.7,52.2 L300.0,55.1 L300.5,58.7 L298.7,62.5 L306.0,67.0 L309.6,65.2 L311.9,67.3 L312.6,73.4 L314.8,77.8 L311.4,83.1 L312.9,86.1 L315.8,88.1 L316.8,86.4 L320.2,88.6 L321.2,91.0 L326.5,89.4 L329.8,91.0 L332.6,87.7 L335.8,89.6 L340.4,90.5 L342.1,92.1 L351.1,90.5 L353.9,87.7 L358.6,87.6 L363.5,82.3 L367.4,80.3 L375.1,83.6 L376.6,87.1 L378.2,84.9 L379.6,89.5 L383.6,87.9 L387.3,88.2 L390.3,85.2 L395.0,85.1 L396.0,82.7 L400.6,84.0 L403.9,86.9 L407.0,87.8 L409.3,92.4 L411.9,90.7 L416.6,94.1 L420.4,93.9 L420.3,96.7 L422.8,95.7 L425.1,99.2 L428.7,100.8 L430.5,99.5 L432.2,102.7 L405.7,143.3 L413.0,146.5 L417.0,146.7 L419.4,144.8 L421.9,145.2 L425.5,148.9 L426.6,152.9 L431.5,155.9 L435.2,162.0 L432.9,164.8 L430.1,162.0 L427.7,162.1 L425.8,164.9 L422.0,161.7 L421.8,158.3 L417.3,156.8 L411.3,159.1 L409.6,156.2 L406.4,158.2 L401.8,158.5 L401.4,160.7 L396.6,166.3 L388.9,165.4 L387.1,167.2 L384.3,166.0 L381.4,169.0 L375.9,168.6 L375.2,170.0 L369.8,170.8 L365.7,169.8 L361.2,171.0 L357.7,173.6 L354.3,174.4 L352.1,177.3 L347.3,180.3 L341.8,182.0 L341.5,184.1 L332.9,190.2 L331.9,191.8 L328.3,191.5 L321.8,194.4 L322.6,199.7 L319.6,207.1 L320.1,210.6 L318.5,216.3 L313.2,222.8 L309.5,230.3 L311.6,235.1 L313.4,244.0 L310.8,248.2 L304.2,249.6 L292.2,258.2 L289.1,261.7 L287.3,269.3 L291.0,277.0 L283.8,279.6 L280.8,278.9 L282.2,282.4 L280.7,285.5 L277.5,283.5 L271.3,281.2 L264.0,279.9 L260.4,277.7 L257.8,277.7 L257.0,279.8 L258.7,287.1 L259.0,297.7 L257.8,299.9 L253.8,301.9 L245.1,303.4 L235.0,307.7 L228.3,307.7 L226.8,310.9 L223.2,312.2 L222.7,314.3 L226.0,319.6 L225.7,321.5 L219.7,318.0 L217.7,318.2 L208.9,326.0 L205.1,327.8 Z"
+                  [class.active]="selectedDepartment?.id === 'loreto'"
+                  [class.hovered]="hoveredDepartmentId === 'loreto'"
+                  [style.--dept-color]="'#62c370'"
+                  (mouseenter)="onDepartmentHover('loreto')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('loreto')">
+                  <title>Loreto</title>
+                </path>
+
+                <!-- 17. MADRE DE DIOS -->
+                <path
+                  id="madre-de-dios"
+                  class="department"
+                  d="M348.5,426.5 L351.4,421.6 L349.2,417.3 L350.3,415.8 L355.9,418.0 L362.4,417.6 L379.3,409.2 L384.8,407.1 L392.9,401.2 L397.8,395.1 L399.8,384.8 L406.7,379.3 L405.9,419.6 L410.0,416.9 L413.6,420.8 L419.2,422.0 L422.6,421.1 L431.9,416.6 L437.5,417.1 L440.8,418.6 L446.2,418.2 L478.5,478.4 L474.2,482.8 L476.1,484.6 L474.9,486.7 L471.7,487.4 L466.9,492.1 L467.0,498.4 L443.0,509.7 L441.4,509.6 L416.4,496.5 L415.1,496.9 L407.8,496.0 L406.8,497.3 L408.9,499.6 L403.0,500.4 L389.7,498.0 L384.5,494.6 L378.8,492.9 L372.4,489.9 L368.2,490.0 L359.1,486.3 L357.0,482.1 L357.9,477.9 L354.4,469.2 L349.3,466.4 L347.6,461.0 L341.4,457.3 L339.8,452.7 L341.8,443.7 L346.9,434.6 L347.7,430.3 L347.7,430.3 Z"
+                  [class.active]="selectedDepartment?.id === 'madre-de-dios'"
+                  [class.hovered]="hoveredDepartmentId === 'madre-de-dios'"
+                  [style.--dept-color]="'#62c370'"
+                  (mouseenter)="onDepartmentHover('madre-de-dios')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('madre-de-dios')">
+                  <title>Madre de Dios</title>
+                </path>
+
+                <!-- 18. MOQUEGUA -->
+                <path
+                  id="moquegua"
+                  class="department"
+                  d="M380.3,678.4 L375.7,674.9 L372.8,674.1 L373.7,672.1 L372.5,663.2 L369.3,659.9 L371.3,658.4 L375.3,649.7 L372.5,647.1 L371.1,642.7 L372.0,640.8 L376.5,637.8 L376.5,634.1 L379.8,629.5 L382.8,627.8 L389.2,628.0 L390.2,622.9 L392.8,620.2 L394.1,609.7 L400.0,612.5 L404.5,610.9 L409.5,612.5 L410.6,616.7 L413.0,620.2 L412.1,623.5 L414.2,629.0 L423.6,638.0 L418.4,641.0 L417.9,644.1 L416.1,646.7 L414.5,646.3 L412.7,642.7 L410.0,641.9 L407.2,644.3 L406.2,647.7 L406.7,651.1 L402.2,656.4 L398.3,658.1 L394.9,662.7 L393.9,665.9 L389.4,672.1 L382.2,675.7 Z"
+                  [class.active]="selectedDepartment?.id === 'moquegua'"
+                  [class.hovered]="hoveredDepartmentId === 'moquegua'"
+                  [style.--dept-color]="'#e04b3f'"
+                  (mouseenter)="onDepartmentHover('moquegua')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('moquegua')">
+                  <title>Moquegua</title>
+                </path>
+
+                <!-- 19. PASCO -->
+                <path
+                  id="pasco"
+                  class="department"
+                  d="M175.8,396.3 L179.3,393.8 L181.8,390.4 L184.8,389.3 L192.4,390.2 L195.5,393.2 L202.8,393.7 L206.2,395.6 L212.8,391.9 L210.6,383.1 L211.6,377.9 L214.2,376.1 L218.6,375.3 L223.2,375.5 L229.6,374.3 L236.9,370.9 L242.5,371.5 L250.8,370.1 L259.3,366.1 L263.0,373.7 L263.1,377.8 L266.0,384.8 L265.6,391.5 L268.2,398.4 L271.6,400.1 L272.9,402.5 L268.4,404.7 L263.9,409.2 L260.2,411.8 L253.6,411.9 L250.0,410.8 L245.2,407.4 L240.8,405.3 L237.1,407.3 L228.7,409.5 L225.0,409.6 L213.4,413.1 L204.4,413.2 L202.8,411.7 L199.4,413.8 L193.8,413.8 L193.6,420.6 L185.7,421.2 L182.7,416.4 L182.6,411.0 L180.1,407.6 L179.7,405.2 Z"
+                  [class.active]="selectedDepartment?.id === 'pasco'"
+                  [class.hovered]="hoveredDepartmentId === 'pasco'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('pasco')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('pasco')">
+                  <title>Pasco</title>
+                </path>
+
+                <!-- 20. PIURA -->
+                <path
+                  id="piura"
+                  class="department"
+                  d="M80.6,188.0 L79.0,191.0 L75.0,195.3 L75.7,200.7 L77.0,202.4 L77.2,208.5 L74.7,208.4 L73.6,217.1 L76.2,223.9 L72.5,227.1 L69.5,225.0 L65.1,224.8 L64.0,222.9 L60.8,221.8 L61.1,217.9 L58.6,214.3 L53.6,210.4 L53.4,220.9 L51.8,222.1 L39.9,225.6 L34.4,231.6 L32.9,235.1 L27.6,242.3 L21.5,239.4 L19.1,237.1 L9.5,230.8 L7.6,227.1 L7.6,223.6 L10.4,219.9 L15.6,222.3 L18.5,218.2 L18.7,214.6 L15.8,207.5 L10.4,202.0 L8.1,201.3 L5.5,197.8 L6.5,193.2 L9.9,192.8 L10.6,190.6 L4.4,182.4 L0.0,177.6 L1.2,176.2 L0.3,169.9 L2.1,166.8 L1.6,163.8 L3.1,160.8 L10.4,154.8 L15.6,158.0 L19.7,157.8 L24.7,159.5 L31.5,153.9 L33.2,159.6 L37.9,159.0 L32.5,166.6 L35.6,169.7 L42.0,165.5 L43.3,162.8 L45.8,162.2 L51.9,166.2 L54.9,166.6 L57.6,169.6 L64.3,168.0 L70.1,171.5 L69.3,174.8 L72.3,182.2 L78.0,187.9 Z"
+                  [class.active]="selectedDepartment?.id === 'piura'"
+                  [class.hovered]="hoveredDepartmentId === 'piura'"
+                  [style.--dept-color]="'#f07a1a'"
+                  (mouseenter)="onDepartmentHover('piura')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('piura')">
+                  <title>Piura</title>
+                </path>
+
+                <!-- 21. PUNO -->
+                <path
+                  id="puno"
+                  class="department"
+                  d="M467.0,498.4 L467.1,508.1 L466.0,518.3 L464.5,521.5 L461.5,522.6 L464.6,526.0 L465.6,534.5 L468.1,536.6 L469.7,541.6 L469.1,543.8 L464.3,544.9 L464.9,550.1 L458.2,554.6 L457.9,557.5 L455.0,558.0 L454.1,564.0 L450.6,565.3 L449.3,572.0 L452.9,577.4 L458.0,582.6 L455.7,583.7 L452.3,587.6 L449.4,593.3 L446.8,592.4 L445.7,589.8 L441.8,586.7 L439.4,586.4 L437.2,582.5 L436.9,584.1 L430.3,584.8 L433.3,586.1 L428.6,587.1 L428.0,588.5 L432.8,597.5 L433.4,600.8 L428.2,594.5 L428.4,596.6 L426.4,599.9 L424.5,599.7 L425.1,605.5 L429.3,606.5 L429.9,608.3 L432.8,608.1 L430.2,605.8 L432.8,603.3 L434.3,607.2 L436.4,607.1 L437.2,610.2 L446.4,612.1 L446.8,615.1 L443.4,618.6 L446.6,618.7 L451.3,622.0 L456.5,621.8 L459.9,620.2 L463.6,620.7 L462.2,622.6 L459.1,622.2 L460.8,624.1 L460.4,627.9 L458.3,631.0 L460.4,633.3 L461.4,636.5 L460.3,637.8 L454.5,640.4 L453.1,643.2 L446.2,650.6 L445.3,653.3 L442.2,654.1 L438.0,656.8 L436.3,660.7 L433.5,660.7 L423.6,654.5 L417.9,644.1 L418.4,641.0 L423.6,638.0 L414.2,629.0 L412.1,623.5 L413.0,620.2 L410.6,616.7 L409.5,612.5 L404.5,610.9 L400.0,612.5 L394.1,609.7 L394.4,606.6 L391.0,601.9 L392.3,597.9 L388.5,593.5 L388.0,584.6 L389.6,583.8 L390.1,579.9 L388.9,575.6 L388.8,571.4 L390.0,569.4 L389.6,563.0 L387.4,562.5 L385.1,559.6 L359.1,486.3 L357.0,482.1 Z"
+                  [class.active]="selectedDepartment?.id === 'puno'"
+                  [class.hovered]="hoveredDepartmentId === 'puno'"
+                  [style.--dept-color]="'#4ab8d8'"
+                  (mouseenter)="onDepartmentHover('puno')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('puno')">
+                  <title>Puno</title>
+                </path>
+
+                <!-- 22. SAN MARTÍN -->
+                <path
+                  id="san-martin"
+                  class="department"
+                  d="M137.8,265.1 L136.6,263.7 L137.9,251.9 L140.5,249.1 L144.5,250.7 L149.0,250.7 L153.0,249.0 L154.3,245.6 L158.8,241.3 L159.8,238.9 L156.3,231.8 L152.4,229.8 L146.0,228.1 L143.4,225.7 L138.7,216.7 L139.0,206.6 L141.5,203.8 L145.0,206.6 L152.0,209.5 L156.7,213.9 L159.3,215.0 L167.2,215.3 L172.3,218.2 L176.1,226.2 L178.5,228.3 L183.9,228.2 L189.5,224.3 L192.1,224.1 L198.0,230.2 L200.9,231.6 L210.0,231.2 L216.7,232.7 L220.3,234.3 L222.9,237.0 L224.4,240.7 L223.3,251.6 L222.2,257.5 L218.2,262.9 L216.2,262.3 L212.9,258.2 L207.6,255.8 L203.7,257.0 L200.6,262.8 L199.9,265.5 L200.9,269.3 L200.4,277.7 L201.9,284.2 L211.1,303.7 L212.4,307.6 L211.7,311.6 L208.1,315.9 L205.9,324.9 L203.1,327.0 L201.1,330.4 L197.5,329.8 L196.4,325.1 L191.7,317.7 L190.6,318.8 L190.3,324.2 L186.8,326.1 L174.9,323.7 L171.7,324.4 L170.8,322.7 L169.6,312.7 L165.1,308.5 L157.4,306.0 L152.5,305.9 L150.8,303.2 L151.0,299.5 L148.3,294.3 L149.0,287.0 L143.6,280.6 L142.2,276.0 L142.5,271.7 L140.1,269.9 Z"
+                  [class.active]="selectedDepartment?.id === 'san-martin'"
+                  [class.hovered]="hoveredDepartmentId === 'san-martin'"
+                  [style.--dept-color]="'#62c370'"
+                  (mouseenter)="onDepartmentHover('san-martin')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('san-martin')">
+                  <title>San Martín</title>
+                </path>
+
+                <!-- 23. TACNA -->
+                <path
+                  id="tacna"
+                  class="department"
+                  d="M417.9,644.1 L423.6,654.5 L433.5,660.7 L436.3,660.7 L438.8,661.3 L441.4,664.0 L441.7,669.3 L435.1,674.8 L430.2,674.7 L428.7,677.5 L431.1,687.1 L427.9,693.2 L423.9,697.2 L417.8,699.6 L408.3,700.0 L402.3,695.5 L397.9,693.0 L392.9,688.0 L390.5,686.8 L389.7,684.5 L383.5,681.4 L380.3,678.4 L382.2,675.7 L389.4,672.1 L393.9,665.9 L394.9,662.7 L398.3,658.1 L402.2,656.4 L406.7,651.1 L406.2,647.7 L407.2,644.3 L410.0,641.9 L412.7,642.7 L414.5,646.3 L416.1,646.7 Z"
+                  [class.active]="selectedDepartment?.id === 'tacna'"
+                  [class.hovered]="hoveredDepartmentId === 'tacna'"
+                  [style.--dept-color]="'#e04b3f'"
+                  (mouseenter)="onDepartmentHover('tacna')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('tacna')">
+                  <title>Tacna</title>
+                </path>
+
+                <!-- 24. TUMBES -->
+                <path
+                  id="tumbes"
+                  class="department"
+                  d="M10.4,154.8 L13.0,150.5 L17.8,146.7 L18.4,144.2 L21.5,140.5 L27.5,136.8 L30.5,132.6 L36.9,131.0 L37.9,128.3 L40.8,129.5 L40.6,131.8 L42.4,135.8 L42.6,142.6 L44.8,146.8 L39.4,151.6 L35.5,150.8 L32.7,151.4 L31.5,153.9 L24.7,159.5 L19.7,157.8 L15.6,158.0 Z"
+                  [class.active]="selectedDepartment?.id === 'tumbes'"
+                  [class.hovered]="hoveredDepartmentId === 'tumbes'"
+                  [style.--dept-color]="'#f07a1a'"
+                  (mouseenter)="onDepartmentHover('tumbes')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('tumbes')">
+                  <title>Tumbes</title>
+                </path>
+
+                <!-- 25. UCAYALI -->
+                <path
+                  id="ucayali"
+                  class="department"
+                  d="M347.7,430.3 L343.7,429.5 L339.1,430.9 L334.0,434.4 L331.1,434.2 L327.8,431.7 L323.5,432.2 L319.3,429.8 L317.2,425.6 L314.5,428.4 L311.9,429.2 L300.5,430.2 L297.5,424.4 L298.3,417.7 L295.7,412.7 L293.2,409.9 L288.5,408.5 L283.6,415.4 L264.9,419.5 L261.5,417.2 L260.2,411.8 L263.9,409.2 L268.4,404.7 L272.9,402.5 L271.6,400.1 L268.2,398.4 L265.6,391.5 L266.0,384.8 L263.1,377.8 L263.0,373.7 L259.3,366.1 L253.2,357.2 L252.5,354.6 L254.0,349.7 L254.1,344.0 L256.0,340.1 L256.5,335.1 L260.2,332.2 L260.1,329.0 L258.5,327.4 L254.2,326.9 L249.5,328.4 L240.5,335.2 L236.0,341.4 L230.7,350.1 L225.4,352.1 L220.9,355.9 L217.4,356.7 L212.6,350.6 L211.7,344.8 L208.5,340.9 L207.9,334.2 L205.1,327.8 L208.9,326.0 L217.7,318.2 L219.7,318.0 L225.7,321.5 L226.0,319.6 L222.7,314.3 L223.2,312.2 L226.8,310.9 L228.3,307.7 L235.0,307.7 L245.1,303.4 L253.8,301.9 L257.8,299.9 L259.0,297.7 L258.7,287.1 L257.0,279.8 L257.8,277.7 L260.4,277.7 L264.0,279.9 L271.3,281.2 L277.5,283.5 L280.7,285.5 L279.4,286.0 L286.2,292.8 L291.0,295.4 L290.9,298.4 L287.8,298.7 L284.4,301.7 L292.6,304.0 L295.1,308.7 L294.9,310.8 L297.9,317.7 L304.3,321.8 L304.5,326.3 L307.6,329.5 L311.2,331.1 L315.1,337.7 L318.6,341.2 L319.2,345.0 L315.8,350.5 L314.2,351.0 L309.4,357.3 L324.6,357.5 L339.1,360.3 L343.7,362.6 L345.4,367.5 L345.2,371.1 L347.9,372.8 L349.1,375.9 L347.8,380.4 L378.2,380.8 L385.6,378.4 L387.0,375.9 L392.5,373.8 L397.9,367.9 L405.4,362.9 L409.0,359.6 L411.3,359.3 L409.3,363.5 L407.5,364.4 L410.5,370.6 L407.2,373.8 L406.7,379.3 L399.8,384.8 L397.8,395.1 L392.9,401.2 L384.8,407.1 L379.3,409.2 L362.4,417.6 L355.9,418.0 L350.3,415.8 L349.2,417.3 L351.4,421.6 L348.5,426.5 Z"
+                  [class.active]="selectedDepartment?.id === 'ucayali'"
+                  [class.hovered]="hoveredDepartmentId === 'ucayali'"
+                  [style.--dept-color]="'#62c370'"
+                  (mouseenter)="onDepartmentHover('ucayali')"
+                  (mouseleave)="onDepartmentLeave()"
+                  (click)="selectDepartment('ucayali')">
+                  <title>Ucayali</title>
+                </path>
+
+              </g>
+
+              <!-- Dynamic Radar / Scan Pulse Rings -->
+              <g class="radar-scan" opacity="0.15">
+                <circle cx="245" cy="355" r="180" fill="none" stroke="#4ab8d8" stroke-width="0.5" stroke-dasharray="3 6" />
+                <circle cx="245" cy="355" r="320" fill="none" stroke="#2a6fa8" stroke-width="0.5" stroke-dasharray="10 10" />
+              </g>
+
+            </svg>
+
+            <!-- Floating Sci-Fi HUD Tooltip -->
+            <div
+              class="hud-tooltip"
+              *ngIf="hoveredDept"
+              [style.left.px]="tooltipX"
+              [style.top.px]="tooltipY">
+              <div class="tooltip-header">
+                <span class="tooltip-dot" [style.background]="hoveredDept.color"></span>
+                <span class="tooltip-name">{{ hoveredDept.name }}</span>
+              </div>
+              <div class="tooltip-sub">
+                <span class="tooltip-region" [style.color]="hoveredDept.color">{{ hoveredDept.region }}</span>
+                <span class="tooltip-anom">{{ hoveredDept.stats?.tempAnomaly }}</span>
+              </div>
+            </div>
+
+          </div>
+
         </div>
+
       </div>
     </section>
   `,
@@ -162,26 +794,35 @@ gsap.registerPlugin(ScrollTrigger);
       display: flex;
       align-items: center;
       min-height: 100vh;
-      padding: 6rem 0;
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
     }
 
     .map-bg-gradient {
       position: absolute;
       inset: 0;
-      background: radial-gradient(
-        ellipse 60% 80% at 70% 50%,
-        rgba(13, 33, 55, 0.6) 0%,
-        transparent 70%
-      );
+    background: radial-gradient(ellipse 70% 80% at 75% 50%, rgb(255 39 39 / 40%) 0%, rgba(4, 12, 20, 0.95) 75%);
       z-index: 1;
+    }
+
+    .hud-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(42, 111, 168, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(42, 111, 168, 0.05) 1px, transparent 1px);
+      z-index: 1;
+      pointer-events: none;
     }
 
     .map-layout {
       position: relative;
       z-index: 10;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
       width: 100%;
       padding: 0 5vw;
       align-items: center;
@@ -190,160 +831,458 @@ gsap.registerPlugin(ScrollTrigger);
     .map-text-col {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1.5rem;
+      z-index: 12;
+    }
+
+    .hud-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(74, 184, 216, 0.2);
+      padding-bottom: 0.5rem;
+    }
+
+    .hud-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: #62c370;
+      letter-spacing: 0.1em;
+    }
+
+    .hud-pulse-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #62c370;
+      box-shadow: 0 0 8px #62c370;
+      animation: pulseGreen 1.8s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.4; }
     }
 
     .map-title-block {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.25rem;
     }
 
     .map-title {
       color: #f0f4f8;
-      font-size: clamp(5rem, 15vw, 14rem);
-      opacity: 0;
-      transform: translateX(-50px);
+      font-size: clamp(3.5rem, 8vw, 9rem);
+      line-height: 0.85;
+      letter-spacing: 0.04em;
     }
 
     .map-subtitle {
       font-family: 'Space Mono', monospace;
-      font-size: clamp(1rem, 2vw, 1.4rem);
+      font-size: clamp(0.85rem, 1.3vw, 1.1rem);
       color: #8099b0;
-      line-height: 1.5;
+      letter-spacing: 0.15em;
     }
 
-    .region-list {
+    /* Region Filter Chips */
+    .region-filter-bar {
       display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
     }
 
-    .region-item {
+    .region-filter-chip {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid rgba(128, 153, 176, 0.2);
+      background: rgba(13, 33, 55, 0.4);
+      color: #8099b0;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
       cursor: pointer;
-      padding: 0.4rem 0;
       transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateX(-20px);
+      border-radius: 2px;
     }
 
-    .region-item:hover {
-      transform: translateX(4px);
+    .region-filter-chip:hover {
+      border-color: var(--chip-color, #4ab8d8);
+      color: #f0f4f8;
+      background: rgba(13, 33, 55, 0.8);
     }
 
-    .region-dot {
+    .region-filter-chip.active {
+      border-color: var(--chip-color, #4ab8d8);
+      color: #f0f4f8;
+      background: rgba(13, 33, 55, 0.95);
+      box-shadow: 0 0 12px rgba(74, 184, 216, 0.2);
+    }
+
+    .chip-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: rgba(240, 244, 248, 0.2);
-      transition: all 0.4s ease;
-      flex-shrink: 0;
     }
 
-    .region-item.active .region-dot {
-      box-shadow: 0 0 8px currentColor;
+    /* HUD Info Card */
+    .hud-info-card {
+      position: relative;
+      background: rgba(8, 20, 34, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(74, 184, 216, 0.3);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(42, 111, 168, 0.1);
+      margin-top: 0.5rem;
     }
 
-    .region-name {
-      transition: color 0.3s ease;
+    .hud-card-corner {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-color: #4ab8d8;
+      border-style: solid;
+      pointer-events: none;
     }
 
-    .connection-chain {
+    .top-left { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .top-right { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+    .bottom-left { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+    .bottom-right { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .hud-card-header {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      padding: 1rem;
-      border: 1px solid rgba(42, 111, 168, 0.15);
-      background: rgba(13, 33, 55, 0.3);
+      gap: 1rem;
     }
 
-    .chain-step {
+    .dept-code-badge {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      line-height: 1;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid currentColor;
+      background: rgba(4, 12, 20, 0.6);
+    }
+
+    .dept-title-group {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      opacity: 0.4;
-      transition: opacity 0.4s ease;
+      flex-direction: column;
+      flex-grow: 1;
     }
 
-    .chain-step--active { opacity: 1; }
-
-    .chain-text {
-      font-size: 0.65rem;
-      transition: color 0.4s ease;
-    }
-
-    .chain-arrow {
+    .dept-region-tag {
       font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+    }
+
+    .dept-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: #f0f4f8;
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+    }
+
+    .dept-alert-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 2px;
+      letter-spacing: 0.1em;
+      font-weight: bold;
+    }
+
+    .alert-roja { background: rgba(224, 48, 0, 0.2); color: #ff3300; border: 1px solid #ff3300; }
+    .alert-naranja { background: rgba(240, 122, 26, 0.2); color: #f07a1a; border: 1px solid #f07a1a; }
+    .alert-amarilla { background: rgba(74, 184, 216, 0.2); color: #4ab8d8; border: 1px solid #4ab8d8; }
+
+    .dept-narrative {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #c0d1e0;
+      font-weight: 300;
+    }
+
+    .hud-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed rgba(74, 184, 216, 0.2);
+    }
+
+    .metric-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      background: rgba(4, 12, 20, 0.5);
+      padding: 0.5rem;
+      border: 1px solid rgba(42, 111, 168, 0.15);
+    }
+
+    .metric-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      color: #8099b0;
+      letter-spacing: 0.1em;
+    }
+
+    .metric-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f0f4f8;
+    }
+
+    .highlight-cyan { color: #4ab8d8; }
+
+    /* Quick Department Chips */
+    .dept-quick-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .quick-list-title {
       font-size: 0.65rem;
       color: #8099b0;
     }
 
-    /* SVG Map */
+    .quick-chips-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      max-height: 110px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .quick-chips-wrapper::-webkit-scrollbar {
+      width: 3px;
+    }
+    .quick-chips-wrapper::-webkit-scrollbar-thumb {
+      background: rgba(74, 184, 216, 0.3);
+    }
+
+    .dept-chip {
+      background: rgba(13, 33, 55, 0.4);
+      border: 1px solid rgba(42, 111, 168, 0.2);
+      color: #8099b0;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .dept-chip:hover, .dept-chip.hovered {
+      border-color: var(--dept-color, #4ab8d8);
+      color: #f0f4f8;
+      background: rgba(13, 33, 55, 0.8);
+    }
+
+    .dept-chip.selected {
+      border-color: var(--dept-color, #4ab8d8);
+      background: var(--dept-color, #4ab8d8);
+      color: #040c14;
+      font-weight: bold;
+    }
+
+    /* RIGHT COL: SVG Map */
     .map-svg-col {
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0;
-      transform: translateX(50px) scale(0.9);
+      position: relative;
+      overflow: visible;
     }
 
-    .peru-svg {
+    .svg-wrapper {
+      position: relative;
       width: 100%;
-      max-width: 380px;
+      max-width: 480px;
+      display: flex;
+      justify-content: center;
+      overflow: visible;
+      padding: 1.5rem;
+    }
+
+    .hud-scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(74, 184, 216, 0.8), transparent);
+      box-shadow: 0 0 15px #4ab8d8;
+      animation: scanVertical 6s ease-in-out infinite;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    @keyframes scanVertical {
+      0% { top: 2%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 96%; opacity: 0; }
+    }
+
+    .peru-svg-real {
+      width: 100%;
       height: auto;
-      filter: drop-shadow(0 0 30px rgba(42, 111, 168, 0.2));
+      max-height: 78vh;
+      overflow: visible;
+      filter: drop-shadow(0 0 35px rgba(13, 33, 55, 0.9));
     }
 
-    .peru-outline {
-      filter: drop-shadow(0 0 8px rgba(42, 111, 168, 0.5));
-      animation: outlinePulse 3s ease-in-out infinite;
-    }
-
-    @keyframes outlinePulse {
-      0%, 100% { stroke-opacity: 0.3; }
-      50% { stroke-opacity: 0.7; }
-    }
-
-    .peru-map-region {
-      fill: transparent;
-      stroke: rgba(42, 111, 168, 0.2);
-      stroke-width: 0.5;
+    /* SVG Department Styling */
+    .department {
+      fill: rgba(13, 33, 55, 0.45);
+      stroke: rgba(74, 184, 216, 0.35);
+      stroke-width: 0.8;
+      stroke-linejoin: round;
+      stroke-linecap: round;
       cursor: pointer;
-      transition: fill 0.6s ease, stroke 0.6s ease;
+      transition: fill 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                  stroke-width 0.35s ease,
+                  filter 0.35s ease;
     }
 
-    .active-norte {
-      fill: rgba(196, 92, 0, 0.4);
-      stroke: rgba(240, 122, 26, 0.8);
-      filter: drop-shadow(0 0 6px rgba(196, 92, 0, 0.5));
+    .department:hover,
+    .department.hovered {
+      fill: var(--dept-color, #4ab8d8) !important;
+      fill-opacity: 0.78;
+      stroke: #ffffff !important;
+      stroke-width: 1.8;
+      filter: drop-shadow(0 0 14px var(--dept-color, #4ab8d8)) drop-shadow(0 0 4px #ffffff);
     }
 
-    .active-central {
-      fill: rgba(224, 80, 0, 0.3);
-      stroke: rgba(224, 80, 0, 0.6);
+    .department.active {
+      fill: var(--dept-color, #4ab8d8) !important;
+      fill-opacity: 0.88;
+      stroke: #ffffff !important;
+      stroke-width: 2.2;
+      filter: drop-shadow(0 0 20px var(--dept-color, #4ab8d8)) drop-shadow(0 0 8px var(--dept-color, #4ab8d8));
     }
 
-    .active-andes {
-      fill: rgba(42, 111, 168, 0.3);
-      stroke: rgba(74, 184, 216, 0.6);
+    /* Callao Special Marker */
+    .department-group {
+      cursor: pointer;
     }
 
-    .active-selva {
-      fill: rgba(30, 90, 50, 0.3);
-      stroke: rgba(74, 184, 216, 0.4);
+    .callao-marker-outer {
+      fill: none;
+      stroke: #c45c00;
+      stroke-width: 1;
+      animation: pulseCallao 2s infinite;
     }
 
-    @media (max-width: 768px) {
+    .callao-marker-inner {
+      fill: #c45c00;
+    }
+
+    .department-group:hover .callao-marker-outer,
+    .department-group.active .callao-marker-outer {
+      stroke: #ffffff;
+      fill: rgba(196, 92, 0, 0.6);
+      stroke-width: 1.5;
+    }
+
+    @keyframes pulseCallao {
+      0%, 100% { r: 5px; opacity: 0.7; }
+      50% { r: 8px; opacity: 0.3; }
+    }
+
+    /* Tooltip */
+    .hud-tooltip {
+      position: fixed;
+      z-index: 1000;
+      pointer-events: none;
+      background: rgba(4, 12, 20, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(74, 184, 216, 0.4);
+      padding: 0.5rem 0.85rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 10px rgba(74, 184, 216, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      transform: translate(-50%, -120%);
+      transition: left 0.08s ease-out, top 0.08s ease-out;
+    }
+
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tooltip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .tooltip-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: #f0f4f8;
+      letter-spacing: 0.05em;
+    }
+
+    .tooltip-sub {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+    }
+
+    .tooltip-region {
+      letter-spacing: 0.1em;
+    }
+
+    .tooltip-anom {
+      color: #4ab8d8;
+      font-weight: bold;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
       .map-layout {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 2.5rem;
       }
       .map-svg-col {
         order: -1;
+      }
+      .peru-svg-real {
+        max-height: 58vh;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .peru-map-section {
+        padding: 3rem 0;
+      }
+      .map-layout {
+        padding: 0 4vw;
+      }
+      .hud-metrics-grid {
+        grid-template-columns: 1fr;
       }
     }
   `]
@@ -353,125 +1292,134 @@ export class PeruMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('labelRef') labelRef!: ElementRef;
   @ViewChild('titlePeruRef') titlePeruRef!: ElementRef;
   @ViewChild('subtitleRef') subtitleRef!: ElementRef;
+  @ViewChild('regionBarRef') regionBarRef!: ElementRef;
+  @ViewChild('infoPanelRef') infoPanelRef!: ElementRef;
   @ViewChild('mapColRef') mapColRef!: ElementRef;
-  @ViewChild('cityDotsRef') cityDotsRef!: ElementRef;
-  @ViewChild('regionListRef') regionListRef!: ElementRef;
-  @ViewChild('chainRef') chainRef!: ElementRef;
+  @ViewChild('mapSvgRef') mapSvgRef!: ElementRef<SVGElement>;
 
-  activeRegion: string | null = null;
-  animPhase = 0;
+  departments: Department[] = DEPARTMENTS_DATA;
+  selectedDepartment: Department | null = DEPARTMENTS_DATA.find(d => d.id === 'piura') || DEPARTMENTS_DATA[0];
 
-  regions = [
-    { id: 'norte', name: 'COSTA NORTE · PIURA, TUMBES', color: '#f07a1a', active: false },
-    { id: 'central', name: 'COSTA CENTRAL · LIMA', color: '#c45c00', active: false },
-    { id: 'andes', name: 'ANDES · CUENCAS HIDROGRÁFICAS', color: '#4ab8d8', active: false },
-    { id: 'selva', name: 'SELVA · AFLUENTES AMAZÓNICOS', color: '#7ec8e3', active: false },
-  ];
+  hoveredDepartmentId: string | null = null;
+  hoveredDept: Department | null = null;
 
-  chain = [
-    { label: 'OCÉANO', color: '#4ab8d8', active: false },
-    { label: 'LLUVIA', color: '#1a4a6e', active: false },
-    { label: 'RÍOS', color: '#c45c00', active: false },
-    { label: 'CIUDADES', color: '#e03000', active: false },
+  tooltipX = 0;
+  tooltipY = 0;
+
+  selectedRegionFilter = 'TODOS';
+
+  regionFilters = [
+    { name: 'TODOS', color: '#4ab8d8' },
+    { name: 'COSTA NORTE', color: '#f07a1a' },
+    { name: 'COSTA CENTRAL', color: '#c45c00' },
+    { name: 'COSTA SUR', color: '#e04b3f' },
+    { name: 'ANDES', color: '#4ab8d8' },
+    { name: 'SELVA', color: '#62c370' }
   ];
 
   private triggers: ScrollTrigger[] = [];
+
+  get filteredDepartments(): Department[] {
+    if (this.selectedRegionFilter === 'TODOS') {
+      return this.departments;
+    }
+    return this.departments.filter(d => d.region === this.selectedRegionFilter);
+  }
 
   ngAfterViewInit() {
     this.setupAnimations();
   }
 
-  highlightRegion(id: string) {
-    this.activeRegion = id;
-    this.regions.forEach(r => r.active = r.id === id);
+  filterByRegion(regionName: string) {
+    this.selectedRegionFilter = regionName;
   }
 
-  clearHighlight() {
-    this.activeRegion = null;
-    this.regions.forEach(r => r.active = false);
+  onDepartmentHover(deptId: string) {
+    this.hoveredDepartmentId = deptId;
+    this.hoveredDept = this.departments.find(d => d.id === deptId) || null;
+  }
+
+  onDepartmentLeave() {
+    this.hoveredDepartmentId = null;
+    this.hoveredDept = null;
+  }
+
+  onSvgMouseMove(event: MouseEvent) {
+    this.tooltipX = event.clientX;
+    this.tooltipY = event.clientY;
+  }
+
+  selectDepartment(id: string) {
+    const dept = this.departments.find(d => d.id === id);
+    if (dept && this.selectedDepartment?.id !== dept.id) {
+      this.selectedDepartment = dept;
+      this.animateInfoPanel();
+    }
+  }
+
+  private animateInfoPanel() {
+    if (this.infoPanelRef?.nativeElement) {
+      gsap.fromTo(this.infoPanelRef.nativeElement,
+        { opacity: 0, x: -25, scale: 0.98 },
+        { opacity: 1, x: 0, scale: 1, duration: 0.4, ease: 'power2.out' }
+      );
+    }
   }
 
   private setupAnimations() {
     const section = this.sectionRef.nativeElement;
 
-    // Label
-    gsap.fromTo(this.labelRef.nativeElement,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1,
-        scrollTrigger: { trigger: section, start: 'top 75%' }
-      }
-    );
+    // Label & Header
+    if (this.labelRef?.nativeElement) {
+      gsap.fromTo(this.labelRef.nativeElement,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1, y: 0, duration: 1,
+          scrollTrigger: { trigger: section, start: 'top 75%' }
+        }
+      );
+    }
 
-    // PERÚ title
-    gsap.to(this.titlePeruRef.nativeElement, {
-      opacity: 1, x: 0, duration: 1.5, ease: 'power4.out',
-      scrollTrigger: { trigger: section, start: 'top 70%' }
-    });
+    // Title
+    if (this.titlePeruRef?.nativeElement) {
+      gsap.to(this.titlePeruRef.nativeElement, {
+        opacity: 1, x: 0, duration: 1.2, ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 70%' }
+      });
+    }
 
     // Subtitle
-    gsap.fromTo(this.subtitleRef.nativeElement,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.4,
-        scrollTrigger: { trigger: section, start: 'top 70%' }
-      }
-    );
+    if (this.subtitleRef?.nativeElement) {
+      gsap.fromTo(this.subtitleRef.nativeElement,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1, y: 0, duration: 1, delay: 0.3,
+          scrollTrigger: { trigger: section, start: 'top 70%' }
+        }
+      );
+    }
 
-    // Map column
-    gsap.to(this.mapColRef.nativeElement, {
-      opacity: 1, x: 0, scale: 1, duration: 1.5, ease: 'power3.out', delay: 0.3,
-      scrollTrigger: { trigger: section, start: 'top 65%' }
-    });
+    // Map Column reveal
+    if (this.mapColRef?.nativeElement) {
+      gsap.fromTo(this.mapColRef.nativeElement,
+        { opacity: 0, scale: 0.92, y: 30 },
+        {
+          opacity: 1, scale: 1, y: 0, duration: 1.4, ease: 'power3.out', delay: 0.2,
+          scrollTrigger: { trigger: section, start: 'top 65%' }
+        }
+      );
+    }
 
-    // Region list items stagger
-    const regionItems = this.regionListRef.nativeElement.querySelectorAll('.region-item');
-    gsap.to(regionItems, {
-      opacity: 1, x: 0, duration: 0.7, stagger: 0.15, delay: 0.5,
-      scrollTrigger: { trigger: section, start: 'top 65%' }
-    });
-
-    // Chain reveal
-    gsap.fromTo(this.chainRef.nativeElement,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1, delay: 1,
-        scrollTrigger: { trigger: section, start: 'top 60%' }
-      }
-    );
-
-    // Animate anim phases for region auto-highlight
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top 50%',
-      onEnter: () => {
-        this.animateRegions();
-        this.animateChain();
-        this.animateCityDots();
-      }
-    });
-  }
-
-  private animateRegions() {
-    const phases = [1, 2, 3, 4];
-    phases.forEach((phase, i) => {
-      setTimeout(() => {
-        this.animPhase = phase;
-      }, i * 600);
-    });
-    setTimeout(() => {
-      this.animPhase = 0;
-    }, phases.length * 600 + 800);
-  }
-
-  private animateChain() {
-    this.chain.forEach((step, i) => {
-      setTimeout(() => {
-        step.active = true;
-      }, i * 400 + 200);
-    });
-  }
-
-  private animateCityDots() {
-    const dots = this.cityDotsRef.nativeElement.querySelectorAll('.city-dot, .city-label');
-    gsap.to(dots, { opacity: 1, duration: 0.5, stagger: 0.3, delay: 0.5 });
+    // Info Panel reveal
+    if (this.infoPanelRef?.nativeElement) {
+      gsap.fromTo(this.infoPanelRef.nativeElement,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1, y: 0, duration: 1, delay: 0.4,
+          scrollTrigger: { trigger: section, start: 'top 65%' }
+        }
+      );
+    }
   }
 
   ngOnDestroy() {

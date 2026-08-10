@@ -104,7 +104,7 @@ gsap.registerPlugin(ScrollTrigger);
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(to right, rgba(4,12,20,0.92) 0%, rgba(4,12,20,0.4) 50%, rgba(4,12,20,0.7) 100%),
+        linear-gradient(to right, rgba(4, 12, 20, 0.17) 0%, rgba(4,12,20,0.4) 50%, rgba(4,12,20,0.7) 100%),
         linear-gradient(to top, rgba(4,12,20,0.9) 0%, transparent 40%);
       z-index: 2;
     }

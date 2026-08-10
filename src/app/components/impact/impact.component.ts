@@ -218,7 +218,7 @@ export class ImpactComponent implements AfterViewInit, OnDestroy {
   }
 
   getOverlay(color: string): string {
-    return `linear-gradient(to right, rgba(4,12,20,0.88) 0%, rgba(4,12,20,0.55) 55%, rgba(4,12,20,0.7) 100%)`;
+    return `linear-gradient(to right, rgba(228, 128, 35, 0.42) 0%, rgba(4, 12, 20, 0.29) 55%, rgba(4,12,20,0.7) 100%)`;
   }
 
   private setupAnimations() {
