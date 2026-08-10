@@ -38,67 +38,167 @@ import { CommonModule } from '@angular/common';
     </nav>
   `,
   styles: [`
-    :host { display: block; }
+:host {
+  display: block;
+  width: 100%;
+}
 
-    .nav-right .nav-scroll-indicator {
-      transition: opacity 0.4s ease;
-    }
+/* ================================
+   NAV RIGHT
+================================ */
 
-    .nav-right .nav-scroll-indicator.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
+.nav-right {
+  position: relative;
+  min-width: 120px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
-    .nav-right .nav-pct {
-      position: absolute;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      font-size: 0.65rem;
-    }
+.nav-right .nav-scroll-indicator {
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
 
-    .nav-right .nav-pct.visible {
-      opacity: 1;
-    }
+.nav-right .nav-scroll-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
-    .nav-right {
-      position: relative;
-      min-width: 120px;
-      display: flex;
-      justify-content: flex-end;
-    }
+.nav-right .nav-pct {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  font-size: 0.65rem;
+}
 
-    .nav-progress {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      min-width: 200px;
-    }
+.nav-right .nav-pct.visible {
+  opacity: 1;
+}
 
-    .nav-progress.visible { opacity: 1; }
+/* ================================
+   PROGRESS
+================================ */
 
-    .nav-progress-track {
-      width: 100%;
-      height: 1px;
-      background: rgba(240, 244, 248, 0.1);
-      position: relative;
-    }
+.nav-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
 
-    .nav-progress-fill {
-      height: 100%;
-      background: #4ab8d8;
-      box-shadow: 0 0 8px rgba(74, 184, 216, 0.5);
-      transition: width 0.1s linear;
-    }
+  width: clamp(140px, 20vw, 200px);
+  min-width: 0;
 
-    .nav-section-label {
-      font-size: 0.55rem;
-      color: #8099b0;
-      letter-spacing: 0.15em;
-      white-space: nowrap;
-    }
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.nav-progress.visible {
+  opacity: 1;
+}
+
+.nav-progress-track {
+  width: 100%;
+  height: 1px;
+  background: rgba(240, 244, 248, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-progress-fill {
+  height: 100%;
+  background: #4ab8d8;
+  box-shadow: 0 0 8px rgba(74, 184, 216, 0.5);
+  transition: width 0.1s linear;
+}
+
+.nav-section-label {
+  font-size: clamp(0.65rem, 0.55vw, 0.75rem);
+  color: #8099b0;
+  letter-spacing: 0.15em;
+  white-space: nowrap;
+}
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 768px) {
+
+  .nav-progress {
+    width: clamp(100px, 25vw, 160px);
+  }
+
+  .nav-right {
+    min-width: 80px;
+  }
+
+  .nav-right .nav-scroll-indicator {
+    font-size: 0.55rem;
+  }
+
+  .nav-logo {
+    font-size: 0.7rem;
+  }
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+  .nav-progress {
+    width: 100px;
+  }
+
+  .nav-section-label {
+    font-size: 0.45rem;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-right {
+    min-width: 40px;
+  }
+
+  /* Quitamos el texto largo */
+  .nav-scroll-indicator {
+    display: none;
+  }
+
+  .nav-right .nav-pct {
+    position: static;
+    font-size: 0.6rem;
+  }
+
+  .nav-logo {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* ================================
+   MOBILE PEQUEÑO
+================================ */
+
+@media (max-width: 400px) {
+
+  .nav-progress {
+    width: 70px;
+  }
+
+  .nav-section-label {
+    display: none;
+  }
+
+  .nav-logo {
+    font-size: 0.55rem;
+  }
+
+  .nav-right {
+    min-width: 30px;
+  }
+}
   `]
 })
 export class NavComponent implements OnInit, OnDestroy {
@@ -110,18 +210,18 @@ export class NavComponent implements OnInit, OnDestroy {
   Math = Math;
 
   private sections: { id: string; label: string; el?: Element }[] = [
-    { id: 'section-opening',     label: 'APERTURA' },
-    { id: 'section-ocean',       label: 'EL OCÉANO' },
+    { id: 'section-opening', label: 'APERTURA' },
+    { id: 'section-ocean', label: 'EL OCÉANO' },
     { id: 'section-temperature', label: 'TEMPERATURA' },
-    { id: 'section-connected',   label: 'CONECTADO' },
-    { id: 'section-peru-map',    label: 'PERÚ' },
-    { id: 'section-coast',       label: 'LA COSTA' },
-    { id: 'section-rivers',      label: 'RÍOS' },
-    { id: 'section-impact',      label: 'IMPACTO' },
-    { id: 'section-climax',      label: 'TENSIÓN' },
-    { id: 'section-data',        label: 'DATOS' },
-    { id: 'section-alert',       label: 'ALERTA' },
-    { id: 'section-final',       label: 'PREVENCIÓN' },
+    { id: 'section-connected', label: 'CONECTADO' },
+    { id: 'section-peru-map', label: 'PERÚ' },
+    { id: 'section-coast', label: 'LA COSTA' },
+    { id: 'section-rivers', label: 'RÍOS' },
+    { id: 'section-impact', label: 'IMPACTO' },
+    { id: 'section-climax', label: 'TENSIÓN' },
+    { id: 'section-data', label: 'DATOS' },
+    { id: 'section-alert', label: 'ALERTA' },
+    { id: 'section-final', label: 'PREVENCIÓN' },
   ];
 
   ngOnInit() {
@@ -155,5 +255,5 @@ export class NavComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

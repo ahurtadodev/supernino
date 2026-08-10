@@ -383,7 +383,7 @@ export class ConnectedComponent implements AfterViewInit, OnDestroy {
   }
 
   getOverlayGradient(accentColor: string): string {
-    return `linear-gradient(to right, rgba(4, 12, 20, 0.94) 0%, rgba(4, 12, 20, 0.72) 50%, rgba(4, 12, 20, 0.85) 100%),
+    return `linear-gradient(to right, rgba(107, 107, 107, 0.14) 0%, rgba(206, 206, 206, 0.31) 50%, rgba(4, 12, 20, 0.85) 100%),
             linear-gradient(to top, rgba(4, 12, 20, 0.95) 0%, transparent 60%)`;
   }
 

@@ -107,9 +107,7 @@ gsap.registerPlugin(ScrollTrigger);
     .rivers-vignette {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(to right, rgba(6,8,10,0.92) 0%, rgba(6,8,10,0.5) 60%, rgba(6,8,10,0.8) 100%),
-        linear-gradient(to top, rgba(6,8,10,0.95) 0%, transparent 50%);
+    background: linear-gradient(to right, rgb(235 87 28 / 45%) 0%, rgb(101 80 20 / 50%) 60%, rgb(56 29 4 / 42%) 100%), linear-gradient(to top, rgba(6, 8, 10, 0.95) 0%, transparent 50%);
       z-index: 2;
     }
 
