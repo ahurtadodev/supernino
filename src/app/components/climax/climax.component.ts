@@ -190,8 +190,8 @@ gsap.registerPlugin(ScrollTrigger);
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: #4ab8d8;
-      box-shadow: 0 0 20px rgba(74, 184, 216, 0.7);
+      background: var(--c-accent);
+      box-shadow: 0 0 20px rgba(200, 127, 53, 0.7);
       animation: dotPulse 2s ease-in-out infinite;
     }
 
@@ -199,8 +199,8 @@ gsap.registerPlugin(ScrollTrigger);
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: #e03000;
-      box-shadow: 0 0 20px rgba(224, 48, 0, 0.7);
+      background: #cc1a00;
+      box-shadow: 0 0 20px rgba(204, 26, 0, 0.7);
       animation: dotPulse 2s ease-in-out infinite 0.5s;
     }
 
@@ -221,8 +221,8 @@ gsap.registerPlugin(ScrollTrigger);
     .conn-arrow-line {
       width: 120px;
       height: 1px;
-      background: linear-gradient(to right, #4ab8d8, #e03000);
-      box-shadow: 0 0 8px rgba(224, 48, 0, 0.4);
+      background: linear-gradient(to right, var(--c-accent), #cc1a00);
+      box-shadow: 0 0 8px rgba(204, 26, 0, 0.4);
     }
 
     .conn-arrow-head {

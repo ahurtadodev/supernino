@@ -329,7 +329,7 @@ export class ConnectedComponent implements AfterViewInit, OnDestroy {
       description: 'Las aguas del Pacífico acumulan una cantidad masiva de energía térmica. Esta anomalía en la superficie marina es el detonante de la cadena de eventos que alcanzará el territorio peruano.',
       tag: '01 · PACÍFICO TROPICAL',
       image: 'assets/images/ocean_hero.png',
-      color: '#4ab8d8',
+      color: '#a87d10',
     },
     {
       id: 'atmosphere',
@@ -339,7 +339,7 @@ export class ConnectedComponent implements AfterViewInit, OnDestroy {
       description: 'El calor del océano modifica la circulación de los vientos alisios y la presión atmosférica, alterando el equilibrio climático de todo el continente sudamericano.',
       tag: '02 · CIRCULACIÓN ATMOSFÉRICA',
       image: 'assets/images/scene_atmosphere.png',
-      color: '#7ec8e3',
+      color: '#c87f35',
     },
     {
       id: 'rain',
@@ -349,7 +349,7 @@ export class ConnectedComponent implements AfterViewInit, OnDestroy {
       description: 'La inmensa evaporación marina asciende y se desplaza hacia la costa. En las regiones del norte, las precipitaciones superan con frecuencia los promedios históricos.',
       tag: '03 · EVAPORACIÓN Y NUBOSIDAD',
       image: 'assets/images/scene_rain.png',
-      color: '#1a70b0',
+      color: '#c45c00',
     },
     {
       id: 'rivers',
@@ -359,7 +359,7 @@ export class ConnectedComponent implements AfterViewInit, OnDestroy {
       description: 'El volumen de agua transportado por los ríos sobrepasa su cauce natural. Las cuencas de la costa norte y central sufren crecidas repentinas y desbordamientos.',
       tag: '04 · DESBORDE DE CUENCAS',
       image: 'assets/images/river_flooding.png',
-      color: '#f07a1a',
+      color: '#d4621a',
     },
     {
       id: 'territory',
@@ -369,7 +369,7 @@ export class ConnectedComponent implements AfterViewInit, OnDestroy {
       description: 'Lo que comenzó como una anomalía en el Pacífico se manifiesta en el suelo peruano: infraestructura dañada, campos anegados y ciudades en situación de emergencia.',
       tag: '05 · IMPACTO TERRITORIAL',
       image: 'assets/images/road_extreme.png',
-      color: '#e03000',
+      color: '#cc1a00',
     },
   ];
 

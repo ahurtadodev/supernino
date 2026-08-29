@@ -68,6 +68,7 @@ interface CronogramaItem {
             <div *ngFor="let item of cronograma; let i = index"
                  class="crono-card"
                  [class.crono-max]="item.isMax"
+                 [class]="'crono-card ' + getRiskClass(item.riesgo) + (item.isMax ? ' crono-max' : '')"
                  [attr.data-risk]="item.riesgo">
 
               <div class="crono-card-top">
@@ -79,7 +80,6 @@ interface CronogramaItem {
               </div>
 
               <div class="crono-card-body">
-                <div class="crono-icon">{{ item.icon }}</div>
                 <div class="crono-texts">
                   <p class="crono-desc">{{ item.descripcion }}</p>
                   <div class="crono-effect-box">
@@ -93,8 +93,8 @@ interface CronogramaItem {
           </div>
 
           <div class="crono-footer font-mono">
-            <span>ℹ️ Fuente: ENFEN – Comunicado Oficial N° 07-2025, SENAMHI, NOAA, OMM.</span>
-            <span>📅 Periodo: Julio 2026 – Abril 2027</span>
+            <span>Fuente: ENFEN &mdash; Comunicado Oficial N&deg; 07-2025, SENAMHI, NOAA, OMM.</span>
+            <span>Periodo: Julio 2026 &ndash; Abril 2027</span>
           </div>
         </div>
 
@@ -141,7 +141,7 @@ interface CronogramaItem {
   `,
   styles: [`
     .data-section {
-      background: #040c14;
+      background: #070604;
       display: flex;
       align-items: center;
       padding: 8rem 0;
@@ -161,7 +161,7 @@ interface CronogramaItem {
       top: 0;
       bottom: 0;
       width: 1px;
-      background: rgba(42, 111, 168, 0.06);
+      background: rgba(255, 255, 255, 0.04);
     }
 
     .data-content {
@@ -189,28 +189,32 @@ interface CronogramaItem {
 
     /* Cronograma 2026-2027 styling */
     .cronograma-container {
-      background: rgba(10, 22, 38, 0.65);
-      border: 1px solid rgba(42, 111, 168, 0.3);
-      padding: 2.5rem;
+      background: rgba(8, 20, 36, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      padding: 3rem;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255,255,255,0.05);
     }
 
     .cronograma-header {
       margin-bottom: 2rem;
-      border-bottom: 1px solid rgba(42, 111, 168, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 1.5rem;
     }
 
     .badge-official {
       display: inline-block;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      color: #f07a1a;
-      background: rgba(240, 122, 26, 0.15);
-      border: 1px solid rgba(240, 122, 26, 0.4);
-      padding: 0.3rem 0.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--c-accent);
+      background: rgba(184, 125, 58, 0.15);
+      border: 1px solid rgba(184, 125, 58, 0.3);
+      border-radius: 9999px;
+      padding: 0.35rem 0.9rem;
       letter-spacing: 0.15em;
       margin-bottom: 0.8rem;
     }
@@ -221,38 +225,42 @@ interface CronogramaItem {
     }
 
     .crono-sub {
-      color: #7ec8e3;
+      color: var(--c-accent);
       font-size: 0.75rem;
       letter-spacing: 0.1em;
       margin-top: 0.4rem;
+      opacity: 0.75;
     }
 
     .cronograma-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
+      gap: 1.5rem;
       margin-bottom: 2rem;
     }
 
     .crono-card {
-      background: rgba(4, 12, 20, 0.7);
-      border: 1px solid rgba(42, 111, 168, 0.2);
-      padding: 1.25rem;
-      transition: all 0.3s ease;
+      background: rgba(18, 15, 12, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       gap: 1rem;
 
       &:hover {
-        border-color: rgba(74, 184, 216, 0.5);
-        transform: translateY(-3px);
+        border-color: rgba(212, 139, 56, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
       }
     }
 
     .crono-card.crono-max {
-      border: 2px solid #ff0033;
-      background: rgba(60, 0, 15, 0.5);
-      box-shadow: 0 0 25px rgba(255, 0, 51, 0.3);
+      border: 1px solid rgba(204, 26, 0, 0.6);
+      background: rgba(40, 6, 12, 0.6);
+      box-shadow: 0 15px 40px rgba(204, 26, 0, 0.25);
     }
 
     .crono-card-top {
@@ -262,17 +270,18 @@ interface CronogramaItem {
     }
 
     .crono-mes {
-      font-size: 1.1rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: #f0f4f8;
+      letter-spacing: 0.05em;
     }
 
     .crono-risk-badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      border-radius: 9999px;
       letter-spacing: 0.1em;
       display: inline-flex;
       align-items: center;
@@ -306,29 +315,32 @@ interface CronogramaItem {
     }
 
     .crono-desc {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       font-size: 0.85rem;
-      color: #d0e0f0;
-      line-height: 1.4;
+      color: rgba(200, 218, 232, 0.85);
+      line-height: 1.5;
+      font-weight: 400;
     }
 
     .crono-effect-box {
-      background: rgba(13, 33, 55, 0.4);
-      padding: 0.5rem 0.75rem;
-      border-left: 2px solid rgba(74, 184, 216, 0.4);
+      background: rgba(6, 20, 38, 0.5);
+      padding: 0.6rem 0.9rem;
+      border-left: 3px solid rgba(184, 125, 58, 0.4);
+      border-radius: 0 10px 10px 0;
     }
 
     .effect-label {
       font-size: 0.55rem;
-      color: #7ec8e3;
+      color: var(--c-accent);
+      letter-spacing: 0.1em;
     }
 
     .crono-efectos {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
-      color: #8099b0;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: rgba(200, 215, 228, 0.75);
       margin-top: 0.2rem;
-      line-height: 1.35;
+      line-height: 1.4;
     }
 
     .crono-footer {
@@ -337,7 +349,7 @@ interface CronogramaItem {
       flex-wrap: wrap;
       gap: 1rem;
       padding-top: 1.25rem;
-      border-top: 1px solid rgba(42, 111, 168, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
       font-size: 0.7rem;
       color: #8099b0;
     }
@@ -346,21 +358,25 @@ interface CronogramaItem {
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2px;
+      gap: 1.25rem;
     }
 
     .stat-card {
       padding: 2.5rem 2rem;
-      border: 1px solid rgba(42, 111, 168, 0.1);
-      background: rgba(13, 33, 55, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 24px;
+      background: rgba(6, 18, 34, 0.55);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
       opacity: 0;
       transform: translateY(30px);
-      transition: background 0.4s ease, border-color 0.4s ease;
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
     }
 
     .stat-card:hover {
-      background: rgba(13, 33, 55, 0.4);
-      border-color: rgba(42, 111, 168, 0.3);
+      background: rgba(13, 33, 55, 0.75);
+      border-color: rgba(184, 125, 58, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
     }
 
     .stat-number {
@@ -371,9 +387,10 @@ interface CronogramaItem {
     }
 
     .stat-prefix, .stat-suffix {
-      font-family: 'Bebas Neue', sans-serif;
+      font-family: var(--font-display);
       font-size: clamp(1.5rem, 3vw, 3rem);
-      color: #8099b0;
+      font-weight: 700;
+      color: rgba(122, 148, 170, 0.6);
     }
 
     .stat-val {
@@ -420,7 +437,7 @@ interface CronogramaItem {
       left: 0;
       right: 0;
       height: 1px;
-      background: rgba(42, 111, 168, 0.3);
+      background: rgba(200, 127, 53, 0.2);
     }
 
     .timeline-event {
@@ -445,9 +462,9 @@ interface CronogramaItem {
     }
 
     .ev-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.55rem;
-      color: #8099b0;
+      font-family: var(--font-mono);
+      font-size: 0.52rem;
+      color: rgba(122, 148, 170, 0.65);
       white-space: nowrap;
       position: absolute;
       top: calc(100% + 0.3rem);
@@ -481,72 +498,72 @@ export class DataSectionComponent implements AfterViewInit, OnDestroy {
       riesgo: 'MEDIO',
       descripcion: 'Mar más cálido de lo normal, primeras alteraciones en la pesca.',
       efectos: 'Cambios en la temperatura del mar, primeras afectaciones en la pesca.',
-      icon: '⚓',
-      badgeBg: 'rgba(240, 192, 32, 0.2)',
-      badgeColor: '#f0c020',
+      icon: '',
+      badgeBg: 'rgba(168, 125, 16, 0.18)',
+      badgeColor: '#c4a020',
     },
     {
       mes: 'Agosto 2026',
       riesgo: 'MEDIO-ALTO',
       descripcion: 'Incremento de la temperatura del aire y del mar.',
       efectos: 'Aumento de temperaturas, condiciones más cálidas y húmedas.',
-      icon: '🌡️',
-      badgeBg: 'rgba(240, 144, 32, 0.2)',
-      badgeColor: '#f09020',
+      icon: '',
+      badgeBg: 'rgba(196, 92, 0, 0.18)',
+      badgeColor: '#c45c00',
     },
     {
       mes: 'Septiembre 2026',
       riesgo: 'ALTO',
       descripcion: 'Mayor probabilidad de lluvias en la costa norte.',
       efectos: 'Lluvias en la costa norte, mayor humedad atmosférica.',
-      icon: '🌧️',
-      badgeBg: 'rgba(240, 96, 26, 0.25)',
-      badgeColor: '#f0601a',
+      icon: '',
+      badgeBg: 'rgba(140, 58, 0, 0.22)',
+      badgeColor: '#c05000',
     },
     {
       mes: 'Octubre 2026',
       riesgo: 'ALTO',
       descripcion: 'Lluvias más frecuentes, activación de quebradas en zonas vulnerables.',
       efectos: 'Lluvias intensas, activación de quebradas y deslizamientos.',
-      icon: '⚡',
-      badgeBg: 'rgba(240, 96, 26, 0.25)',
-      badgeColor: '#f0601a',
+      icon: '',
+      badgeBg: 'rgba(140, 58, 0, 0.22)',
+      badgeColor: '#c05000',
     },
     {
       mes: 'Noviembre 2026',
       riesgo: 'MUY ALTO',
       descripcion: 'Inundaciones localizadas, impactos en agricultura y pesca.',
       efectos: 'Inundaciones en zonas bajas, afectación a cultivos y pesca.',
-      icon: '🌾',
-      badgeBg: 'rgba(224, 48, 0, 0.3)',
-      badgeColor: '#ff4422',
+      icon: '',
+      badgeBg: 'rgba(122, 18, 0, 0.28)',
+      badgeColor: '#b83020',
     },
     {
       mes: 'Diciembre 2026',
       riesgo: 'MUY ALTO',
       descripcion: 'Inicio del verano con lluvias intensas en la costa norte.',
       efectos: 'Lluvias intensas y persistentes, mayor riesgo de inundaciones.',
-      icon: '🌩️',
-      badgeBg: 'rgba(224, 48, 0, 0.3)',
-      badgeColor: '#ff4422',
+      icon: '',
+      badgeBg: 'rgba(122, 18, 0, 0.28)',
+      badgeColor: '#b83020',
     },
     {
       mes: 'Enero 2027',
       riesgo: 'MUY ALTO',
       descripcion: 'Uno de los meses de mayor riesgo de desbordes e inundaciones.',
       efectos: 'Desbordes de ríos, inundaciones y daños a infraestructura.',
-      icon: '🌊',
-      badgeBg: 'rgba(208, 0, 0, 0.35)',
-      badgeColor: '#ff2233',
+      icon: '',
+      badgeBg: 'rgba(100, 8, 0, 0.32)',
+      badgeColor: '#a82018',
     },
     {
       mes: 'Febrero 2027',
       riesgo: 'MÁXIMO',
       descripcion: 'Históricamente suele ser el mes de mayor impacto si el evento es fuerte.',
       efectos: 'Mayor impacto histórico: inundaciones severas, huaicos y daños generalizados.',
-      icon: '🚨',
-      badgeBg: '#ff0033',
-      badgeColor: '#ffffff',
+      icon: '',
+      badgeBg: '#7a1200',
+      badgeColor: '#f0d8d0',
       isMax: true,
     },
     {
@@ -554,18 +571,18 @@ export class DataSectionComponent implements AfterViewInit, OnDestroy {
       riesgo: 'MUY ALTO',
       descripcion: 'Continúan lluvias intensas y huaicos en zonas expuestas.',
       efectos: 'Persisten lluvias intensas, huaicos y afectación en infraestructura y agricultura.',
-      icon: '🏔️',
-      badgeBg: 'rgba(208, 0, 0, 0.35)',
-      badgeColor: '#ff2233',
+      icon: '',
+      badgeBg: 'rgba(100, 8, 0, 0.32)',
+      badgeColor: '#a82018',
     },
     {
       mes: 'Abril 2027',
       riesgo: 'MEDIO',
       descripcion: 'Disminución gradual de la intensidad del fenómeno.',
       efectos: 'Lluvias menos frecuentes, efectos residuales en algunas zonas.',
-      icon: '🌤️',
-      badgeBg: 'rgba(240, 122, 26, 0.2)',
-      badgeColor: '#f07a1a',
+      icon: '',
+      badgeBg: 'rgba(168, 125, 16, 0.15)',
+      badgeColor: '#a87d10',
     },
   ];
 
@@ -620,6 +637,13 @@ export class DataSectionComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.setupAnimations();
+  }
+
+  getRiskClass(riesgo: string): string {
+    if (riesgo === 'MÁXIMO') return 'risk-bar-max';
+    if (riesgo === 'MUY ALTO') return 'risk-bar-high';
+    if (riesgo === 'ALTO') return 'risk-bar-mid';
+    return 'risk-bar-low';
   }
 
   private setupAnimations() {

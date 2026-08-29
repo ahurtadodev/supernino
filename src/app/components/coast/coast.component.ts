@@ -79,7 +79,7 @@ gsap.registerPlugin(ScrollTrigger);
   `,
   styles: [`
     .coast-section {
-      background: #040c14;
+      background: #070604;
     }
 
     .coast-bg {
@@ -153,12 +153,12 @@ gsap.registerPlugin(ScrollTrigger);
     }
 
     .coast-headline--2 {
-      color: #4ab8d8;
+      color: var(--c-accent);
       font-size: clamp(4rem, 14vw, 13rem);
       line-height: 0.9;
       text-shadow:
-        0 0 60px rgba(74, 184, 216, 0.2),
-        0 4px 40px rgba(4,12,20,0.8);
+        0 0 60px rgba(200, 127, 53, 0.2),
+        0 4px 40px rgba(6,5,4,0.8);
     }
 
     .coast-para {
@@ -181,7 +181,7 @@ gsap.registerPlugin(ScrollTrigger);
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: #4ab8d8;
+      background: var(--c-accent);
       flex-shrink: 0;
     }
 
@@ -199,7 +199,7 @@ gsap.registerPlugin(ScrollTrigger);
 
     .rain-bar-fill {
       height: 2px;
-      background: linear-gradient(to right, #4ab8d8, #c45c00);
+      background: linear-gradient(to right, rgba(200, 127, 53, 0.4), #c45c00);
       width: 0%;
       transition: width 2s ease;
       box-shadow: 0 0 8px rgba(196, 92, 0, 0.5);

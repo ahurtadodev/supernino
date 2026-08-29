@@ -65,7 +65,7 @@ gsap.registerPlugin(ScrollTrigger);
           <div class="gauge-fill" #gaugeFill></div>
           <div class="gauge-markers">
             <div class="gauge-marker" style="bottom: 30%">
-              <span class="label-sci" style="color:#4ab8d8">NORMAL</span>
+              <span class="label-sci" style="color:var(--c-muted)">NORMAL</span>
             </div>
             <div class="gauge-marker" style="bottom: 60%">
               <span class="label-sci" style="color:#f07a1a">ALERTA</span>
@@ -204,8 +204,8 @@ gsap.registerPlugin(ScrollTrigger);
       width: 100%;
       height: 0%;
       border-radius: 3px;
-      background: linear-gradient(to top, #e03000, #f07a1a, #4ab8d8);
-      box-shadow: 0 0 12px rgba(224, 48, 0, 0.5);
+      background: linear-gradient(to top, #cc1a00, #d4621a, #5a4a1e);
+      box-shadow: 0 0 12px rgba(204, 26, 0, 0.5);
       transition: height 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
