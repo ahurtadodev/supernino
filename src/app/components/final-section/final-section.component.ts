@@ -85,7 +85,7 @@ gsap.registerPlugin(ScrollTrigger);
   `,
   styles: [`
     .final-section {
-      background: #040c14;
+      background: #070604;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -123,8 +123,8 @@ gsap.registerPlugin(ScrollTrigger);
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(to top, rgba(4,12,20,0.97) 0%, rgba(4,12,20,0.5) 40%, transparent 70%),
-        linear-gradient(to bottom, rgba(4,12,20,0.7) 0%, transparent 30%);
+        linear-gradient(to top, rgba(6,5,4,0.97) 0%, rgba(6,5,4,0.5) 40%, transparent 70%),
+        linear-gradient(to bottom, rgba(6,5,4,0.7) 0%, transparent 30%);
       z-index: 3;
     }
 
@@ -148,24 +148,24 @@ gsap.registerPlugin(ScrollTrigger);
     }
 
     .final-line {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       font-size: clamp(1.1rem, 2vw, 1.5rem);
       font-weight: 300;
-      color: rgba(240, 244, 248, 0.65);
-      letter-spacing: 0.02em;
+      color: rgba(190, 210, 228, 0.7);
+      letter-spacing: 0.015em;
       opacity: 0;
       transform: translateY(20px);
     }
 
     .final-line--mid {
-      color: rgba(240, 244, 248, 0.8);
+      color: rgba(210, 228, 242, 0.85);
       font-size: clamp(1rem, 1.8vw, 1.35rem);
     }
 
     .final-pause-line {
       width: 1px;
       height: 40px;
-      background: linear-gradient(to bottom, rgba(74, 184, 216, 0.4), transparent);
+      background: linear-gradient(to bottom, rgba(200, 127, 53, 0.5), transparent);
       opacity: 0;
     }
 
@@ -175,11 +175,11 @@ gsap.registerPlugin(ScrollTrigger);
     }
 
     .final-headline {
-      color: #f0f4f8;
+      color: var(--c-white);
       font-size: clamp(3.5rem, 10vw, 11rem);
       text-shadow:
-        0 0 60px rgba(200, 200, 220, 0.2),
-        0 0 120px rgba(74, 184, 216, 0.1);
+        0 0 60px rgba(200, 127, 53, 0.2),
+        0 0 120px rgba(200, 127, 53, 0.08);
     }
 
     .final-cta {
@@ -212,9 +212,9 @@ gsap.registerPlugin(ScrollTrigger);
     }
 
     .source-link {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: #4ab8d8;
+      color: rgba(200, 127, 53, 0.7);
       letter-spacing: 0.1em;
       text-decoration: none;
       transition: opacity 0.3s ease;
@@ -223,7 +223,7 @@ gsap.registerPlugin(ScrollTrigger);
     .source-link:hover { opacity: 0.6; }
 
     .sep-dot {
-      color: #8099b0;
+      color: var(--c-muted);
       font-size: 0.65rem;
     }
 
@@ -235,7 +235,7 @@ gsap.registerPlugin(ScrollTrigger);
       right: 0;
       z-index: 10;
       padding: 1.5rem 5vw;
-      border-top: 1px solid rgba(42, 111, 168, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -248,26 +248,26 @@ gsap.registerPlugin(ScrollTrigger);
       gap: 0.4rem;
     }
 
-    .footer-brand { color: #4ab8d8; }
+    .footer-brand { color: var(--c-accent); }
 
     .footer-note {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.55rem;
-      color: #8099b0;
+      color: var(--c-muted);
       max-width: 460px;
-      line-height: 1.6;
-      opacity: 0.6;
+      line-height: 1.7;
+      opacity: 0.7;
     }
 
     .footer-right {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.6rem;
-      color: #8099b0;
+      color: var(--c-muted);
       cursor: pointer;
       transition: color 0.3s ease;
     }
 
-    .footer-right:hover { color: #4ab8d8; }
+    .footer-right:hover { color: var(--c-accent); }
 
     @media (max-width: 768px) {
       .final-footer { flex-direction: column; gap: 1rem; align-items: flex-start; }

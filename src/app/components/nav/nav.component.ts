@@ -11,27 +11,41 @@ import { CommonModule } from '@angular/common';
     <nav class="nav-bar" [class.scrolled]="scrolled" #navRef id="main-nav">
 
       <!-- Logo -->
-      <div class="nav-logo">
+      <a class="nav-logo" href="#" (click)="goToTop($event)">
         <span>EL NIÑO</span>
         <span>·</span>
         <span>PERÚ 2026</span>
-      </div>
+      </a>
 
-      <!-- Center: progress indicator -->
-      <div class="nav-progress" [class.visible]="scrollProgress > 0.02">
-        <div class="nav-progress-track">
-          <div class="nav-progress-fill" [style.width]="(scrollProgress * 100) + '%'"></div>
+      <!-- Center: Links & progress indicator -->
+      <div class="nav-center-wrap">
+        <div class="nav-quick-links" [class.visible]="scrolled">
+          <a class="nav-link-pill" (click)="scrollToSection('section-peru-map')">Mapa de Alerta</a>
+          <a class="nav-link-pill" (click)="scrollToSection('section-data')">Cronograma</a>
+          <a class="nav-link-pill nav-link-highlight" (click)="scrollToSection('catalog')">Blindaje de Techos</a>
         </div>
-        <span class="nav-section-label label-sci">{{ currentSection }}</span>
+
+        <div class="nav-progress" [class.visible]="scrollProgress > 0.02 && !scrolled">
+          <div class="nav-progress-track">
+            <div class="nav-progress-fill" [style.width]="(scrollProgress * 100) + '%'"></div>
+          </div>
+          <span class="nav-section-label label-sci">{{ currentSection }}</span>
+        </div>
       </div>
 
-      <!-- Right: scroll hint / scroll % -->
+      <!-- Right: Direct CTA / scroll % -->
       <div class="nav-right">
+        <a
+          href="https://wa.me/51908801093?text=Hola,%20solicito%20cotizaci%C3%B3n%20para%20blindaje%20de%20techos%20ante%20El%20Ni%C3%B1o%202026-2027"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-cta-pill"
+          [class.visible]="scrolled">
+          <span>Cotizar</span>
+          <span class="cta-dot"></span>
+        </a>
         <span class="nav-scroll-indicator" [class.hidden]="scrolled">
           SCROLL PARA EXPLORAR
-        </span>
-        <span class="nav-pct label-sci" [class.visible]="scrolled">
-          {{ Math.round(scrollProgress * 100) }}%
         </span>
       </div>
 
@@ -41,6 +55,86 @@ import { CommonModule } from '@angular/common';
 :host {
   display: block;
   width: 100%;
+}
+
+.nav-center-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-quick-links {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-quick-links.visible {
+  display: flex;
+}
+
+.nav-link-pill {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  padding: 0.35rem 0.8rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--c-white);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.nav-link-pill.nav-link-highlight {
+  color: var(--c-accent);
+  background: rgba(200, 127, 53, 0.1);
+  border: 1px solid rgba(200, 127, 53, 0.25);
+
+  &:hover {
+    background: rgba(200, 127, 53, 0.2);
+    color: #ffffff;
+  }
+}
+
+.nav-cta-pill {
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(200, 127, 53, 0.15);
+  border: 1px solid rgba(200, 127, 53, 0.4);
+  border-radius: 9999px;
+  color: var(--c-accent);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--c-accent);
+    color: #080808;
+    box-shadow: 0 0 15px rgba(200, 127, 53, 0.4);
+  }
+}
+
+.nav-cta-pill.visible {
+  display: inline-flex;
+}
+
+.cta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #25d366;
+  box-shadow: 0 0 6px #25d366;
 }
 
 /* ================================
@@ -107,15 +201,15 @@ import { CommonModule } from '@angular/common';
 
 .nav-progress-fill {
   height: 100%;
-  background: #4ab8d8;
-  box-shadow: 0 0 8px rgba(74, 184, 216, 0.5);
+  background: #b87d3a;
+  box-shadow: 0 0 6px rgba(184, 125, 58, 0.4);
   transition: width 0.1s linear;
 }
 
 .nav-section-label {
-  font-size: clamp(0.65rem, 0.55vw, 0.75rem);
-  color: #8099b0;
-  letter-spacing: 0.15em;
+  font-size: clamp(0.55rem, 0.5vw, 0.65rem);
+  color: rgba(184, 125, 58, 0.65);
+  letter-spacing: 0.18em;
   white-space: nowrap;
 }
 
@@ -253,6 +347,18 @@ export class NavComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  scrollToSection(targetId: string) {
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  goToTop(event: Event) {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   ngOnDestroy() { }

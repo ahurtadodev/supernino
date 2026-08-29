@@ -135,7 +135,7 @@ gsap.registerPlugin(ScrollTrigger);
     .reading-card {
       opacity: 0;
       transform: translateX(30px);
-      border-left: 1px solid rgba(42, 111, 168, 0.3);
+      border-left: 2px solid rgba(200, 127, 53, 0.35);
       padding-left: 1.25rem;
     }
 
@@ -153,20 +153,21 @@ gsap.registerPlugin(ScrollTrigger);
     }
 
     .reading-num {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 1.5rem;
-      color: #f0f4f8;
+      color: var(--c-white);
     }
 
     .reading-unit {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.7rem;
-      color: #8099b0;
+      color: var(--c-muted);
     }
 
     .reading-bar {
       height: 2px;
-      background: rgba(42, 111, 168, 0.2);
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.08);
       width: 100%;
     }
 
@@ -195,9 +196,9 @@ export class TemperatureComponent implements AfterViewInit, OnDestroy {
 
   readings = [
     { label: 'TEMPERATURA SUPERFICIAL', value: '+2.3', unit: '°C ANOMALÍA', pct: 70, color: '#c45c00' },
-    { label: 'ÍNDICE OCEÁNICO EL NIÑO', value: '+1.8', unit: 'σ', pct: 58, color: '#f07a1a' },
-    { label: 'PRECIPITACIÓN PROYECTADA', value: '+140', unit: '% SOBRE MEDIA', pct: 85, color: '#4ab8d8' },
-    { label: 'ESTADO ALERTA', value: 'ACTIVO', unit: '', pct: 100, color: '#e03000' },
+    { label: 'ÍNDICE OCEÁNICO EL NIÑO', value: '+1.8', unit: 'σ', pct: 58, color: '#d4621a' },
+    { label: 'PRECIPITACIÓN PROYECTADA', value: '+140', unit: '% SOBRE MEDIA', pct: 85, color: '#c87f35' },
+    { label: 'ESTADO ALERTA', value: 'ACTIVO', unit: '', pct: 100, color: '#cc1a00' },
   ];
 
   private waveFrame!: number;
@@ -224,7 +225,7 @@ export class TemperatureComponent implements AfterViewInit, OnDestroy {
       for (let i = 0; i < 8; i++) {
         const x = (Date.now() * 0.00015 * (i + 1)) % 1;
         const cx = x * canvas.width;
-        ctx.strokeStyle = `rgba(42, 111, 168, ${0.05 + i * 0.01})`;
+        ctx.strokeStyle = `rgba(200, 127, 53, ${0.03 + i * 0.008})`;
         ctx.lineWidth = 0.5;
         ctx.beginPath();
         for (let y = 0; y < canvas.height; y += 3) {

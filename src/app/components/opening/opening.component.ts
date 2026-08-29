@@ -11,7 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
   standalone: true,
   template: `
     <section class="section-full opening-section" id="section-opening" #sectionRef>
-      <!-- Noise texture -->
+
+      <!-- ENFEN Alert band (top) -->
+      <div  #enfenBand>
+      </div>
+
+      <!-- Background ocean image -->
       <div class="ocean-bg" #bgImage>
         <img
           src="assets/images/banner.jpeg"
@@ -30,23 +35,14 @@ gsap.registerPlugin(ScrollTrigger);
       <!-- Stars background -->
       <canvas #starsCanvas class="particle-canvas"></canvas>
 
-      <!-- Top urgent badge -->
-      <!-- <div class="urgent-top-banner" #bannerRef>
-        <span class="pulse-warning-dot"></span>
-        <span class="label-sci tracking-widest text-warm-orange">
-          ALERTA NACIONAL · MONITOREO CLIMÁTICO 2026 – 2027
-        </span>
-        <span class="banner-badge">ENFEN / SENAMHI</span>
-      </div> -->
-
       <!-- Content -->
-      <div class="opening-content " #contentRef>
+      <div class="opening-content" #contentRef>
         <div class="opening-line" #lineOne>
-          <span class="label-sci tracking-widest text-cyan">PACÍFICO SUR · PROYECCIÓN DE ANOMALÍA</span>
+          <span class="editorial-tag">INFORME ESPECIAL DE PREVENCIÓN CLIMÁTICA</span>
         </div>
 
         <div class="opening-year" #lineTwo>
-          <span class="font-mono text-muted">2026 – 2027</span>
+          <span class="editorial-years">TEMPORADA 2026 – 2027</span>
         </div>
 
         <div class="opening-title" #lineThree>
@@ -55,24 +51,82 @@ gsap.registerPlugin(ScrollTrigger);
         </div>
 
         <div class="opening-concept" #lineConcept>
-          <p class="concept-highlight">"EL NIÑO NO LLEGA DE GOLPE. EMPIEZA EN EL OCÉANO."</p>
+          <p class="concept-highlight">"El agua del Pacífico ya se está calentando. Las lluvias torrenciales pondrán a prueba la resistencia de cada techo en el país."</p>
         </div>
 
-        <div class="opening-sub" #lineFour>
-          <p class="label-sci">El océano está cambiando aceleradamente.</p>
+        <!-- Quick Action Buttons -->
+        <div class="opening-cta-group" #lineFour>
+          <a class="hero-btn-primary" (click)="scrollToSection('catalog')">
+            <span>Ver Techos y Coberturas Recomendadas</span>
+          </a>
+          <a class="hero-btn-secondary" (click)="scrollToSection('section-peru-map')">
+            <span>Consultar Mapa por Regiones</span>
+            <span class="arrow-right">→</span>
+          </a>
         </div>
+      </div>
+
+      <!-- Geographic context -->
+      <div class="geo-coord" #geoCoord>
+        <span>Costa Norte y Sierra del Perú</span>
+        <span class="geo-sep">·</span>
+        <span>Guía Técnica de Protección Estructural</span>
       </div>
 
       <!-- Scroll indicator -->
       <div class="opening-scroll-hint" #scrollHint>
-        <span class="label-sci">SCROLL PARA VER EL IMPACTO EN EL PERÚ</span>
+        <span class="scroll-label">Desliza para conocer el impacto</span>
         <div class="scroll-line"></div>
       </div>
     </section>
   `,
   styles: [`
+    /* ENFEN Alert band (Píldora Flotante Redondeada) */
+    .enfen-band {
+      position: absolute;
+      top: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.55rem 1.6rem;
+      background: rgba(18, 14, 12, 0.88);
+      border: 1px solid rgba(212, 139, 56, 0.35);
+      border-radius: 9999px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(212, 139, 56, 0.1);
+    }
+
+    .enfen-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #cc1a00;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px #cc1a00;
+      animation: enfenPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes enfenPulse {
+      0%, 100% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .enfen-text {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: rgba(247, 244, 238, 0.95);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
     .opening-section {
-      background: #040c14;
+      background: #0a0908;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -135,21 +189,21 @@ gsap.registerPlugin(ScrollTrigger);
       border-radius: 50%;
       position: relative;
       z-index: 2;
-      background: #ff3300;
-      box-shadow: 0 0 12px #ff3300;
-      animation: alertBlink 1.2s ease-in-out infinite;
+      background: #cc1a00;
+      box-shadow: 0 0 10px #cc1a00;
+      animation: alertBlink 1.5s ease-in-out infinite;
     }
 
     @keyframes alertBlink {
       0%, 100% { opacity: 0.3; transform: scale(0.9); }
-      50% { opacity: 1; transform: scale(1.3); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
 
     .banner-badge {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.65rem;
-      background: rgba(224, 48, 0, 0.3);
-      color: #f0f4f8;
+      background: rgba(180, 34, 0, 0.25);
+      color: #eef2f6;
       padding: 0.15rem 0.5rem;
       letter-spacing: 0.1em;
       z-index: 3;
@@ -162,71 +216,102 @@ gsap.registerPlugin(ScrollTrigger);
       max-width: 90vw;
     }
 
-    .opening-line {
-      opacity: 0;
-      margin-bottom: 1rem;
-      letter-spacing: 0.4em;
+    .editorial-tag {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: var(--c-accent);
+      text-transform: uppercase;
     }
 
-    .text-cyan {
-      color: #7ec8e3;
-    }
-
-    .text-warm-orange {
-      color: #f07a1a;
-    }
-
-    .opening-year {
-      opacity: 0;
-      font-size: clamp(1.1rem, 2.2vw, 1.8rem);
-      color: #8099b0;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.3em;
-    }
-
-    .opening-title {
-      position: relative;
-      opacity: 0;
-      transform: scale(0.85);
-      will-change: transform, opacity;
-      margin-bottom: 1.5rem;
-    }
-
-    .opening-main-title {
-      font-size: clamp(5rem, 22vw, 19rem);
-      color: #f0f4f8;
-      text-shadow:
-        0 0 80px rgba(196, 92, 0, 0.4),
-        0 0 160px rgba(224, 48, 0, 0.25),
-        0 0 240px rgba(42, 111, 168, 0.2);
-    }
-
-    .opening-glow-effect {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(224, 48, 0, 0.25) 0%, transparent 70%);
-      filter: blur(40px);
-      pointer-events: none;
-      z-index: -1;
+    .editorial-years {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 1.8vw, 1.4rem);
+      font-weight: 700;
+      color: var(--c-muted);
+      letter-spacing: 0.08em;
     }
 
     .opening-concept {
       opacity: 0;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .concept-highlight {
-      font-family: 'Space Mono', monospace;
-      font-size: clamp(0.9rem, 1.6vw, 1.3rem);
-      color: #f07a1a;
-      letter-spacing: 0.08em;
-      text-shadow: 0 0 15px rgba(240, 122, 26, 0.4);
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      line-height: 1.7;
+      color: rgba(247, 244, 238, 0.9);
+      font-weight: 400;
     }
 
-    .opening-sub {
+    .opening-cta-group {
       opacity: 0;
-      margin-top: 1rem;
-      letter-spacing: 0.3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .hero-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.6rem;
+      background: var(--c-accent);
+      color: #0a0908;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(212, 139, 56, 0.35);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+
+      &:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 18px 40px rgba(212, 139, 56, 0.5);
+        background: #e59942;
+      }
+    }
+
+    .hero-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.6rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--c-white);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 9999px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      text-decoration: none;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+      }
+    }
+
+    .scroll-label {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--c-muted);
     }
 
     .opening-scroll-hint {
@@ -240,6 +325,26 @@ gsap.registerPlugin(ScrollTrigger);
       gap: 0.75rem;
       opacity: 0;
       z-index: 10;
+    }
+
+    .geo-coord {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      color: rgba(122, 148, 170, 0.45);
+      text-transform: uppercase;
+      opacity: 0;
+      z-index: 10;
+    }
+
+    .geo-sep {
+      opacity: 0.3;
     }
 
     .scroll-line {
@@ -281,7 +386,6 @@ gsap.registerPlugin(ScrollTrigger);
 export class OpeningComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sectionRef') sectionRef!: ElementRef<HTMLElement>;
   @ViewChild('starsCanvas') starsCanvas!: ElementRef<HTMLCanvasElement>;
-  // @ViewChild('bannerRef') bannerRef!: ElementRef;
   @ViewChild('contentRef') contentRef!: ElementRef;
   @ViewChild('lineOne') lineOne!: ElementRef;
   @ViewChild('lineTwo') lineTwo!: ElementRef;
@@ -289,6 +393,7 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
   @ViewChild('lineConcept') lineConcept!: ElementRef;
   @ViewChild('lineFour') lineFour!: ElementRef;
   @ViewChild('scrollHint') scrollHint!: ElementRef;
+  @ViewChild('geoCoord') geoCoord!: ElementRef;
 
   private tl!: gsap.core.Timeline;
   private animFrame!: number;
@@ -321,7 +426,7 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
       for (const s of this.stars) {
         s.op += Math.sin(Date.now() * s.speed) * 0.003;
         ctx.globalAlpha = Math.abs(s.op);
-        ctx.fillStyle = s.r > 1 ? '#f07a1a' : '#7ec8e3';
+        ctx.fillStyle = s.r > 1 ? '#c87f35' : '#f0ece6';
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
@@ -335,24 +440,23 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
     this.tl = gsap.timeline({ delay: 0.3 });
 
     this.tl
-      // .to(this.bannerRef.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, 0.1)
       .to(this.lineOne.nativeElement, { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, 0.4)
       .to(this.lineTwo.nativeElement, { opacity: 1, duration: 0.9, ease: 'power2.out' }, 1.0)
       .to(this.lineThree.nativeElement, {
         opacity: 1,
         scale: 1,
-        duration: 1.5,
-        ease: 'back.out(1.4)',
+        duration: 1.4,
+        ease: 'power4.out',
         filter: 'blur(0px)'
       }, 1.8)
       .to(this.lineConcept.nativeElement, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' }, 2.8)
       .to(this.lineFour.nativeElement, { opacity: 1, duration: 1, ease: 'power2.out' }, 3.6)
-      .to(this.scrollHint.nativeElement, { opacity: 1, duration: 0.8, ease: 'power2.out' }, 4.2);
+      .to(this.scrollHint.nativeElement, { opacity: 0.8, duration: 0.8, ease: 'power2.out' }, 4.2)
+      .to(this.geoCoord.nativeElement, { opacity: 1, duration: 1.2, ease: 'power2.out' }, 4.4);
 
-    // Initial blur on title
-    gsap.set(this.lineThree.nativeElement, { filter: 'blur(20px)' });
+    // Initial state
+    gsap.set(this.lineThree.nativeElement, { filter: 'blur(20px)', scale: 0.96 });
     gsap.set(this.lineConcept.nativeElement, { y: 20 });
-    //gsap.set(this.bannerRef.nativeElement, { y: -20 });
   }
 
   private setupScrollExit() {
@@ -375,6 +479,13 @@ export class OpeningComponent implements AfterViewInit, OnDestroy {
         });
       }
     });
+  }
+
+  scrollToSection(targetId: string) {
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   ngOnDestroy() {

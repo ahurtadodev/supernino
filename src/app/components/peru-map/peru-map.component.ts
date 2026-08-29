@@ -380,22 +380,10 @@ export const DEPARTMENTS_DATA: Department[] = [
                 </filter>
               </defs>
 
-              <!-- Compass HUD Element -->
-              <g class="hud-compass" transform="translate(440, 40)" opacity="0.4">
-                <circle cx="0" cy="0" r="22" fill="none" stroke="#2a6fa8" stroke-width="0.8" stroke-dasharray="4 2" />
-                <circle cx="0" cy="0" r="13" fill="none" stroke="#4ab8d8" stroke-width="0.5" />
-                <text x="-4" y="-26" font-size="9" fill="#4ab8d8" font-family="Space Mono">N</text>
-                <line x1="0" y1="-18" x2="0" y2="18" stroke="#4ab8d8" stroke-width="0.8" />
-                <line x1="-18" y1="0" x2="18" y2="0" stroke="#4ab8d8" stroke-width="0.8" />
-              </g>
-
-              <!-- Scale / Lat Long HUD Overlay -->
-              <g class="hud-latlong" opacity="0.35" font-family="Space Mono" font-size="8" fill="#8099b0">
-                <text x="-25" y="-5">GRID: 08°00'S / 75°00'W</text>
-                <text x="-25" y="7">DATUM: WGS84 — SISMOMETRÍA 2026</text>
-                <line x1="-25" y1="14" x2="75" y2="14" stroke="#2a6fa8" stroke-width="1" />
-                <line x1="-25" y1="10" x2="-25" y2="18" stroke="#2a6fa8" stroke-width="1" />
-                <line x1="75" y1="10" x2="75" y2="18" stroke="#2a6fa8" stroke-width="1" />
+              <!-- Editorial Cartographic Subtitle -->
+              <g class="carto-legend" transform="translate(360, 40)" opacity="0.6">
+                <text x="0" y="0" font-size="10" fill="var(--c-accent)" font-family="Plus Jakarta Sans" font-weight="600">MAPA REGIONAL DE RIESGO</text>
+                <text x="0" y="14" font-size="8" fill="var(--c-muted)" font-family="Plus Jakarta Sans">Periodo de Lluvias 2026–2027</text>
               </g>
 
               <!-- ALL 25 DEPARTMENTS SVG REAL PATHS -->
@@ -790,7 +778,7 @@ export const DEPARTMENTS_DATA: Department[] = [
   `,
   styles: [`
     .peru-map-section {
-      background: #040c14;
+      background: #070604;
       display: flex;
       align-items: center;
       min-height: 100vh;
@@ -802,7 +790,7 @@ export const DEPARTMENTS_DATA: Department[] = [
     .map-bg-gradient {
       position: absolute;
       inset: 0;
-    background: radial-gradient(ellipse 70% 80% at 75% 50%, rgb(255 39 39 / 40%) 0%, rgba(4, 12, 20, 0.95) 75%);
+    background: radial-gradient(ellipse 70% 80% at 75% 50%, rgba(160, 20, 0, 0.35) 0%, rgba(6, 5, 4, 0.95) 75%);
       z-index: 1;
     }
 
@@ -811,8 +799,8 @@ export const DEPARTMENTS_DATA: Department[] = [
       inset: 0;
       background-size: 40px 40px;
       background-image:
-        linear-gradient(to right, rgba(42, 111, 168, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(42, 111, 168, 0.05) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
       z-index: 1;
       pointer-events: none;
     }
@@ -931,33 +919,28 @@ export const DEPARTMENTS_DATA: Department[] = [
       border-radius: 50%;
     }
 
-    /* HUD Info Card */
+    /* Editorial Info Card */
     .hud-info-card {
       position: relative;
-      background: rgba(8, 20, 34, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(74, 184, 216, 0.3);
-      padding: 1.5rem;
+      background: rgba(18, 15, 12, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 1.8rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(42, 111, 168, 0.1);
+      gap: 1.2rem;
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(255, 255, 255, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
       margin-top: 0.5rem;
     }
 
     .hud-card-corner {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-color: #4ab8d8;
-      border-style: solid;
-      pointer-events: none;
+      display: none;
     }
-
-    .top-left { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
-    .top-right { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
-    .bottom-left { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
-    .bottom-right { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
 
     .hud-card-header {
       display: flex;
@@ -1005,13 +988,13 @@ export const DEPARTMENTS_DATA: Department[] = [
 
     .alert-roja { background: rgba(224, 48, 0, 0.2); color: #ff3300; border: 1px solid #ff3300; }
     .alert-naranja { background: rgba(240, 122, 26, 0.2); color: #f07a1a; border: 1px solid #f07a1a; }
-    .alert-amarilla { background: rgba(74, 184, 216, 0.2); color: #4ab8d8; border: 1px solid #4ab8d8; }
+    .alert-amarilla { background: rgba(200, 127, 53, 0.18); color: #c87f35; border: 1px solid rgba(200, 127, 53, 0.4); }
 
     .dept-narrative {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       font-size: 0.92rem;
       line-height: 1.6;
-      color: #c0d1e0;
+      color: rgba(240, 236, 230, 0.85);
       font-weight: 300;
     }
 
@@ -1020,33 +1003,34 @@ export const DEPARTMENTS_DATA: Department[] = [
       grid-template-columns: repeat(3, 1fr);
       gap: 0.75rem;
       padding-top: 0.75rem;
-      border-top: 1px dashed rgba(74, 184, 216, 0.2);
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
     }
 
     .metric-box {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
-      background: rgba(4, 12, 20, 0.5);
-      padding: 0.5rem;
-      border: 1px solid rgba(42, 111, 168, 0.15);
+      background: rgba(14, 12, 10, 0.6);
+      padding: 0.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
     }
 
     .metric-label {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.55rem;
-      color: #8099b0;
+      color: var(--c-muted);
       letter-spacing: 0.1em;
     }
 
     .metric-value {
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 0.95rem;
       font-weight: 700;
-      color: #f0f4f8;
+      color: var(--c-white);
     }
 
-    .highlight-cyan { color: #4ab8d8; }
+    .highlight-cyan { color: var(--c-accent); }
 
     /* Quick Department Chips */
     .dept-quick-list {
